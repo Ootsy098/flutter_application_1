@@ -12,7 +12,7 @@ class MyFirstFlameGame extends FlameGame
 
   @override
   Color backgroundColor() {
-    return Colors.green;
+    return Colors.white;
   }
 
   @override

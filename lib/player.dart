@@ -17,13 +17,15 @@ class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
   final String playerPNG = 'jumper_sprite.png';
 
   Player({super.position, required this.screenSize})
-    : super(size: Vector2.all(100), anchor: Anchor.center);
+    : super(size: Vector2.all(100), anchor: Anchor.bottomCenter);
 
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load(playerPNG);
-    playerHitbox = RectangleHitbox(size: size)
-      ..collisionType = CollisionType.active;
+    playerHitbox = RectangleHitbox(
+      size: Vector2(size.x - 40, size.y),
+      position: Vector2(10, 0),
+    )..collisionType = CollisionType.active;
     add(playerHitbox);
   }
 
@@ -72,11 +74,11 @@ class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
   }
 
   void applyGravity() {
-    if (position.y < screenSize.y - size.y / 2) {
+    if (position.y < screenSize.y) {
       velocity.y += gravityC;
     } else {
       jump(normalJumpV);
-      position.y = screenSize.y - size.y / 2;
+      position.y = screenSize.y;
     }
   }
 
@@ -87,7 +89,7 @@ class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    if (velocity.y > 0) {
+    if (velocity.y > 0 && position.y < other.position.y) {
       jump(normalJumpV);
     }
   }
