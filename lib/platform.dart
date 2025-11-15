@@ -1,8 +1,11 @@
 import 'package:flame/cache.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
-class Platform extends SpriteComponent {
-  Platform({super.position})
+class RegularPlatform extends SpriteComponent {
+  late final ShapeHitbox platformHitbox;
+
+  RegularPlatform({super.position})
     : super(size: Vector2(100, 20), anchor: Anchor.center);
 
   @override
@@ -14,5 +17,9 @@ class Platform extends SpriteComponent {
       srcSize: Vector2(57, 15),
     );
     sprite = tileFrame;
+    platformHitbox = RectangleHitbox(size: size)
+      ..collisionType = CollisionType.passive;
+
+    add(platformHitbox);
   }
 }

@@ -1,14 +1,17 @@
 import 'dart:ui';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
-class Player extends SpriteComponent with KeyboardHandler {
-  late double playerSpeed = 600;
+class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
+  late double playerSpeed = 700;
   late double horzLerpAcc = 15;
   late double normalJumpV = -1000;
   late double gravityC = 20;
   Vector2 velocity = Vector2.zero();
+  late ShapeHitbox playerHitbox;
+
   late Set<LogicalKeyboardKey> keysDown = {};
   final Vector2 screenSize;
   final String playerPNG = 'jumper_sprite.png';
@@ -19,6 +22,9 @@ class Player extends SpriteComponent with KeyboardHandler {
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load(playerPNG);
+    playerHitbox = RectangleHitbox(size: size)
+      ..collisionType = CollisionType.active;
+    add(playerHitbox);
   }
 
   @override
@@ -41,10 +47,10 @@ class Player extends SpriteComponent with KeyboardHandler {
         !keysDown.contains(LogicalKeyboardKey.arrowLeft)) {
       inputMove(1, dt);
     } else {
-      velocity.x = 0;
+      velocity.x = lerpDouble(velocity.x, 0, horzLerpAcc * dt)!;
     }
-    position += velocity * dt;
     applyGravity();
+    position += velocity * dt;
   }
 
   void inputMove(int dir, double dt) {
@@ -76,5 +82,13 @@ class Player extends SpriteComponent with KeyboardHandler {
 
   void jump(double upwardsVelocity) {
     velocity.y = upwardsVelocity;
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    if (velocity.y > 0) {
+      jump(normalJumpV);
+    }
   }
 }
