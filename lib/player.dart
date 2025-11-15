@@ -1,12 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-
-const String playerPNG = 'jumper_sprite.png';
 
 class Player extends SpriteComponent with KeyboardHandler {
   late double playerSpeed = 600;
@@ -16,6 +11,7 @@ class Player extends SpriteComponent with KeyboardHandler {
   Vector2 velocity = Vector2.zero();
   late Set<LogicalKeyboardKey> keysDown = {};
   final Vector2 screenSize;
+  final String playerPNG = 'jumper_sprite.png';
 
   Player({super.position, required this.screenSize})
     : super(size: Vector2.all(100), anchor: Anchor.center);
