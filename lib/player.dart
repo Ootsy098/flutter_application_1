@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -7,8 +8,9 @@ const String playerPNG = 'jumper_sprite.png';
 class Player extends SpriteComponent with KeyboardHandler {
   num playerSpeed = 10;
   late Set<LogicalKeyboardKey> keysDown = {};
+  final Vector2 screenSize;
 
-  Player({super.position})
+  Player({super.position, required this.screenSize})
     : super(size: Vector2.all(100), anchor: Anchor.center);
 
   @override
@@ -39,5 +41,11 @@ class Player extends SpriteComponent with KeyboardHandler {
 
   void move(int dir) {
     position.x += dir * playerSpeed;
+
+    if (position.x < -size.x / 2) {
+      position.x = screenSize.x + size.x / 2;
+    } else if (position.x > screenSize.x + size.x / 2) {
+      position.x = -size.x / 2;
+    }
   }
 }

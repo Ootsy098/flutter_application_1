@@ -14,7 +14,10 @@ class MyFirstFlameGame extends FlameGame with HasKeyboardHandlerComponents {
 
   @override
   Future<void> onLoad() async {
-    player = Player(position: Vector2(size.x / 2, size.y / 2));
+    player = Player(
+      position: Vector2(size.x / 2, size.y / 2),
+      screenSize: size,
+    );
     add(player);
   }
 }
