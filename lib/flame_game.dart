@@ -1,8 +1,10 @@
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Player.dart';
+import 'package:flutter_application_1/player.dart';
 
-class MyFirstFlameGame extends FlameGame {
+class MyFirstFlameGame extends FlameGame with HasKeyboardHandlerComponents {
+  late Player player;
   MyFirstFlameGame({super.children});
 
   @override
@@ -12,6 +14,7 @@ class MyFirstFlameGame extends FlameGame {
 
   @override
   Future<void> onLoad() async {
-    add(Player(position: Vector2(size.x / 2, size.y / 2)));
+    player = Player(position: Vector2(size.x / 2, size.y / 2));
+    add(player);
   }
 }
