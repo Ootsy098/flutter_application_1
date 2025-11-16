@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,9 @@ class MyFirstFlameGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
   late Player player;
   late List<RegularPlatform> platforms;
+  late double maximumSpaceBetweenPlatforms;
+  late double minSpaceBetweenPlatforms = 30;
+  late double maxPlayerHeight = size.y / 2 - 50;
   MyFirstFlameGame({super.children});
 
   @override
@@ -17,21 +22,38 @@ class MyFirstFlameGame extends FlameGame
 
   @override
   Future<void> onLoad() async {
+    player = Player(
+      position: Vector2(size.x / 2, size.y - 100),
+      screenSize: size,
+    );
+    maximumSpaceBetweenPlatforms = player.normalJumpV.abs();
+
     platforms = [];
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < size.y / minSpaceBetweenPlatforms; i++) {
       platforms.add(
         RegularPlatform(
-          position: Vector2(100.0 + i * 120, size.y - 150 - i * 50),
+          position: Vector2(
+            Random().nextDouble() * size.x,
+            i * size.y / (size.y / minSpaceBetweenPlatforms),
+          ),
         ),
       );
     }
     for (final platform in platforms) {
       add(platform);
     }
-    player = Player(
-      position: Vector2(size.x / 2, size.y / 2),
-      screenSize: size,
-    );
     add(player);
+  }
+
+  @override
+  Future<void> update(double dt) async {
+    super.update(dt);
+
+    if (player.position.y < maxPlayerHeight) {
+      player.position.y = maxPlayerHeight;
+      for (final platform in platforms) {
+        platform.descendPlatform(player.velocity.y, dt, size.y);
+      }
+    }
   }
 }

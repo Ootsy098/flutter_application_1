@@ -22,4 +22,10 @@ class RegularPlatform extends SpriteComponent {
 
     add(platformHitbox);
   }
+
+  void descendPlatform(double v, double dt, double screenHeight) {
+    position.y += v.abs() * dt;
+
+    if (position.y > screenHeight + size.y) removeFromParent();
+  }
 }

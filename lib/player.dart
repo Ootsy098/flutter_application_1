@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
   late double playerSpeed = 700;
   late double horzLerpAcc = 15;
-  late double normalJumpV = -1000;
-  late double gravityC = 20;
+  late double normalJumpV = -1200;
+  late double gravityC = 30;
   Vector2 velocity = Vector2.zero();
   late ShapeHitbox playerHitbox;
 
