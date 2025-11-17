@@ -26,6 +26,9 @@ class RegularPlatform extends SpriteComponent {
   void descendPlatform(double v, double dt, double screenHeight) {
     position.y += v.abs() * dt;
 
-    if (position.y > screenHeight + size.y) removeFromParent();
+    if (position.y > screenHeight + size.y) {
+      // removeFromParent();
+      position.y = -size.y;
+    }
   }
 }
