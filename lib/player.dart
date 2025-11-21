@@ -5,10 +5,10 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
 class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
-  late double playerSpeed = 700;
+  late double playerSpeed = 550;
   late double horzLerpAcc = 15;
-  late double normalJumpV = -1200;
-  late double gravityC = 30;
+  late double normalJumpV = -1000;
+  late double gravityC = 1600;
   Vector2 velocity = Vector2.zero();
   late ShapeHitbox playerHitbox;
 
@@ -51,7 +51,7 @@ class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
     } else {
       velocity.x = lerpDouble(velocity.x, 0, horzLerpAcc * dt)!;
     }
-    applyGravity();
+    applyGravity(dt);
     position += velocity * dt;
   }
 
@@ -73,9 +73,9 @@ class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
     }
   }
 
-  void applyGravity() {
+  void applyGravity(double dt) {
     if (position.y < screenSize.y) {
-      velocity.y += gravityC;
+      velocity.y += gravityC * dt;
     } else {
       jump(normalJumpV);
       position.y = screenSize.y;

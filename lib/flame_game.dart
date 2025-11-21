@@ -13,8 +13,9 @@ class MyFirstFlameGame extends FlameGame
   late Player player;
   late List<RegularPlatform> platforms;
   late double maximumSpaceBetweenPlatforms;
-  late double minSpaceBetweenPlatforms = 30;
+  late double minSpaceBetweenPlatforms = 50;
   late double maxPlayerHeight = size.y / 2 - 50;
+  late double previousPlatformY;
   late PlayerScore playerScore;
   MyFirstFlameGame({super.children});
 
@@ -29,7 +30,8 @@ class MyFirstFlameGame extends FlameGame
       position: Vector2(size.x / 2, size.y - 100),
       screenSize: size,
     );
-    maximumSpaceBetweenPlatforms = player.normalJumpV.abs();
+    maximumSpaceBetweenPlatforms =
+        (pow(player.normalJumpV, 2) / (2 * player.gravityC.abs())) * 0.9;
 
     playerScore = PlayerScore();
 
@@ -39,7 +41,7 @@ class MyFirstFlameGame extends FlameGame
         RegularPlatform(
           position: Vector2(
             Random().nextDouble() * size.x,
-            i * size.y / (size.y / minSpaceBetweenPlatforms),
+            size.y - i * maximumSpaceBetweenPlatforms,
           ),
         ),
       );
