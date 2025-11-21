@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/overlays/hud.dart';
+import 'package:flutter_application_1/overlays/player_score.dart';
 import 'package:flutter_application_1/platform.dart';
 import 'package:flutter_application_1/player.dart';
 
@@ -13,6 +15,7 @@ class MyFirstFlameGame extends FlameGame
   late double maximumSpaceBetweenPlatforms;
   late double minSpaceBetweenPlatforms = 30;
   late double maxPlayerHeight = size.y / 2 - 50;
+  late PlayerScore playerScore;
   MyFirstFlameGame({super.children});
 
   @override
@@ -27,6 +30,8 @@ class MyFirstFlameGame extends FlameGame
       screenSize: size,
     );
     maximumSpaceBetweenPlatforms = player.normalJumpV.abs();
+
+    playerScore = PlayerScore();
 
     platforms = [];
     for (int i = 0; i < size.y / minSpaceBetweenPlatforms; i++) {
@@ -43,6 +48,7 @@ class MyFirstFlameGame extends FlameGame
       add(platform);
     }
     add(player);
+    camera.viewport.add(Hud());
   }
 
   @override
@@ -50,6 +56,9 @@ class MyFirstFlameGame extends FlameGame
     super.update(dt);
 
     if (player.position.y < maxPlayerHeight) {
+      playerScore.increaseScore(
+        ((player.position.y - maxPlayerHeight)).toInt().abs(),
+      );
       player.position.y = maxPlayerHeight;
       for (final platform in platforms) {
         platform.descendPlatform(player.velocity.y, dt, size.y);
