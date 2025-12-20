@@ -15,6 +15,7 @@ class Player extends SpriteComponent
   late double normalJumpV = -1000;
   late double gravityC = 1600;
   late bool firstJumpIsDone = false;
+  late bool gameOver = false;
   double playerJumpDelta = 0;
   Vector2 velocity = Vector2.zero();
   late ShapeHitbox playerHitbox;
@@ -91,8 +92,8 @@ class Player extends SpriteComponent
     if (position.y < cameraBottomY) {
       velocity.y += gravityC * dt;
     } else {
-      jump(normalJumpV);
-      position.y = cameraBottomY;
+      game.hud.onGameOver(game.playerScore.score);
+      gameOver = true;
     }
   }
 

@@ -3,5 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/flame_game.dart';
 
 void main() {
-  runApp(GameWidget(game: MyFirstFlameGame()));
+  onRestart();
+}
+
+void onRestart() {
+  runApp(GameWidget(game: MyFirstFlameGame(onRestart: onRestart)));
 }

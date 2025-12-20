@@ -39,7 +39,6 @@ class RegularPlatform extends SpriteComponent
 
   void resetPosition() {
     final rng = Random();
-    print('x');
     position.x = rng.nextDouble() * game.size.x;
 
     double distance =

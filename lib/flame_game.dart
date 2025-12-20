@@ -17,12 +17,14 @@ class MyFirstFlameGame extends FlameGame
     screenSize: size,
   );
   late List<RegularPlatform> platforms;
+  late Hud hud;
   late double maxPlatformGap;
   late double minPlatformGap = 50;
   late double highestHeightReached = player.position.y;
   late double highestPlatformY;
   late PlayerScore playerScore;
-  MyFirstFlameGame({super.children});
+  final VoidCallback onRestart;
+  MyFirstFlameGame({required this.onRestart, super.children});
 
   @override
   Color backgroundColor() {
@@ -31,6 +33,7 @@ class MyFirstFlameGame extends FlameGame
 
   @override
   Future<void> onLoad() async {
+    camera.viewport = FixedResolutionViewport(resolution: Vector2(500, size.y));
     player = Player(
       position: Vector2(size.x / 2, size.y - 100),
       screenSize: size,
@@ -59,13 +62,15 @@ class MyFirstFlameGame extends FlameGame
     camera.world?.add(player);
     camera.viewfinder = Viewfinder();
     camera.viewfinder.position = Vector2(player.position.x, player.position.y);
-    // camera.follow(player);
-    camera.viewport.add(Hud());
+    hud = Hud();
+    camera.viewport.add(hud);
   }
 
   @override
   Future<void> update(double dt) async {
     super.update(dt);
+    if (player.gameOver) return;
+
     if (player.position.y < highestHeightReached) {
       playerScore.increaseScore(
         (player.position.y - highestHeightReached).abs().toInt(),
