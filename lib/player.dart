@@ -3,12 +3,19 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/flame_game.dart';
 
-class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
+class Player extends SpriteComponent
+    with
+        KeyboardHandler,
+        CollisionCallbacks,
+        HasGameReference<MyFirstFlameGame> {
   late double playerSpeed = 550;
   late double horzLerpAcc = 15;
   late double normalJumpV = -1000;
   late double gravityC = 1600;
+  late bool firstJumpIsDone = false;
+  double playerJumpDelta = 0;
   Vector2 velocity = Vector2.zero();
   late ShapeHitbox playerHitbox;
 
@@ -53,6 +60,11 @@ class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
     }
     applyGravity(dt);
     position += velocity * dt;
+    if (!firstJumpIsDone && velocity.y <= 0) {
+      firstJumpIsDone = true;
+      playerJumpDelta += position.y;
+      game.maxPlatformGap = playerJumpDelta * 0.8;
+    }
   }
 
   void inputMove(int dir, double dt) {
@@ -83,6 +95,9 @@ class Player extends SpriteComponent with KeyboardHandler, CollisionCallbacks {
   }
 
   void jump(double upwardsVelocity) {
+    if (!firstJumpIsDone) {
+      playerJumpDelta = position.y;
+    }
     velocity.y = upwardsVelocity;
   }
 

@@ -25,7 +25,7 @@ class RegularPlatform extends SpriteComponent
       ..collisionType = CollisionType.passive;
 
     add(platformHitbox);
-    game.previousPlatformY = position.y;
+    game.highestPlatformY = position.y;
   }
 
   void descendPlatform(double v, double dt, double screenHeight) {
@@ -37,12 +37,14 @@ class RegularPlatform extends SpriteComponent
   }
 
   void resetPosition() {
-    position.x = Random().nextDouble() * game.size.x;
-    double minDistance = game.minSpaceBetweenPlatforms;
-    double maxDistance = game.maximumSpaceBetweenPlatforms;
+    final rng = Random();
+
+    position.x = rng.nextDouble() * game.size.x;
+
     double distance =
-        Random().nextDouble() * (maxDistance - minDistance) + minDistance;
-    position.y = game.previousPlatformY - distance;
-    game.previousPlatformY = position.y;
+        rng.nextDouble() * (game.maxPlatformGap - game.minPlatformGap) +
+        game.minPlatformGap;
+    position.y = game.highestPlatformY - distance;
+    game.highestPlatformY = position.y;
   }
 }

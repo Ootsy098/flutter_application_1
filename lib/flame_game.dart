@@ -12,10 +12,10 @@ class MyFirstFlameGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
   late Player player;
   late List<RegularPlatform> platforms;
-  late double maximumSpaceBetweenPlatforms;
-  late double minSpaceBetweenPlatforms = 50;
+  late double maxPlatformGap;
+  late double minPlatformGap = 50;
   late double maxPlayerHeight = size.y / 2 - 50;
-  late double previousPlatformY;
+  late double highestPlatformY;
   late PlayerScore playerScore;
   MyFirstFlameGame({super.children});
 
@@ -30,18 +30,18 @@ class MyFirstFlameGame extends FlameGame
       position: Vector2(size.x / 2, size.y - 100),
       screenSize: size,
     );
-    maximumSpaceBetweenPlatforms =
+    maxPlatformGap =
         (pow(player.normalJumpV, 2) / (2 * player.gravityC.abs())) * 0.9;
 
     playerScore = PlayerScore();
 
     platforms = [];
-    for (int i = 0; i < size.y / minSpaceBetweenPlatforms; i++) {
+    for (int i = 0; i < size.y / minPlatformGap; i++) {
       platforms.add(
         RegularPlatform(
           position: Vector2(
             Random().nextDouble() * size.x,
-            size.y - i * maximumSpaceBetweenPlatforms,
+            size.y - i * minPlatformGap,
           ),
         ),
       );
