@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/background.dart';
 import 'package:flutter_application_1/overlays/hud.dart';
 import 'package:flutter_application_1/overlays/player_score.dart';
 import 'package:flutter_application_1/platform.dart';
@@ -24,42 +25,23 @@ class MyFirstFlameGame extends FlameGame
   late double highestPlatformY;
   late PlayerScore playerScore;
   final VoidCallback onRestart;
+  int initialPlatformCount = 20;
+
   MyFirstFlameGame({required this.onRestart, super.children});
 
   @override
   Color backgroundColor() {
-    return Colors.white;
+    return const Color.fromARGB(255, 0, 0, 0);
   }
 
   @override
   Future<void> onLoad() async {
     camera.viewport = FixedResolutionViewport(resolution: Vector2(500, size.y));
-    player = Player(
-      position: Vector2(size.x / 2, size.y - 100),
-      screenSize: size,
-    );
-    maxPlatformGap =
-        (pow(player.normalJumpV, 2) / (2 * player.gravityC.abs())) * 0.9;
 
-    playerScore = PlayerScore();
+    loadGameComponents();
 
-    platforms = [];
-    for (int i = 0; i < size.y / minPlatformGap; i++) {
-      platforms.add(
-        RegularPlatform(
-          position: Vector2(
-            Random().nextDouble() * size.x,
-            size.y - i * minPlatformGap,
-          ),
-        ),
-      );
-    }
+    add(Background());
 
-    for (final platform in platforms) {
-      camera.world?.add(platform);
-    }
-
-    camera.world?.add(player);
     camera.viewfinder = Viewfinder();
     camera.viewfinder.position = Vector2(player.position.x, player.position.y);
     hud = Hud();
@@ -80,8 +62,37 @@ class MyFirstFlameGame extends FlameGame
         Vector2(camera.viewfinder.position.x, highestHeightReached),
       );
       for (final platform in platforms) {
-        platform.descendPlatform(player.velocity.y, dt);
+        platform.checkIsBelowCam(player.velocity.y, dt);
       }
     }
+  }
+
+  void loadGameComponents() {
+    player = Player(
+      position: Vector2(size.x / 2, size.y - 100),
+      screenSize: size,
+    );
+    maxPlatformGap =
+        (pow(player.normalJumpV, 2) / (2 * player.gravityC.abs())) * 0.9;
+
+    playerScore = PlayerScore();
+
+    platforms = [];
+    double currentY = camera.viewfinder.position.y + camera.viewport.size.y / 2;
+
+    for (int i = 0; i < initialPlatformCount; i++) {
+      double gap =
+          minPlatformGap +
+          Random().nextDouble() * (maxPlatformGap - minPlatformGap);
+      Vector2 platformPos = Vector2(
+        Random().nextDouble() * camera.viewport.size.x,
+        currentY + gap,
+      );
+      platforms.add(RegularPlatform(position: platformPos));
+      camera.world?.add(platforms.last);
+      currentY += gap;
+    }
+
+    camera.world?.add(player);
   }
 }

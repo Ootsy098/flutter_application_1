@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:ui';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
@@ -52,6 +50,9 @@ class Player extends SpriteComponent
   @override
   void update(double dt) {
     super.update(dt);
+    if (keysDown.contains(LogicalKeyboardKey.keyR)) {
+      game.onRestart();
+    }
     if (keysDown.contains(LogicalKeyboardKey.arrowLeft) &&
         !keysDown.contains(LogicalKeyboardKey.arrowRight)) {
       inputMove(-1, dt);
@@ -67,7 +68,6 @@ class Player extends SpriteComponent
       firstJumpIsDone = true;
       playerJumpDelta = startJumpY - position.y;
       game.maxPlatformGap = playerJumpDelta * 0.9;
-      log(playerJumpDelta.toString());
     }
   }
 

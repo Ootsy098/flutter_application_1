@@ -28,7 +28,7 @@ class RegularPlatform extends SpriteComponent
     game.highestPlatformY = position.y;
   }
 
-  void descendPlatform(double v, double dt) {
+  void checkIsBelowCam(double v, double dt) {
     double cameraBottomY =
         game.camera.viewfinder.position.y + game.camera.viewport.size.y / 2;
     bool isBelowCamera = position.y > cameraBottomY;
