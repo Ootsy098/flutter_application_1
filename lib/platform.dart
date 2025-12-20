@@ -28,17 +28,18 @@ class RegularPlatform extends SpriteComponent
     game.highestPlatformY = position.y;
   }
 
-  void descendPlatform(double v, double dt, double screenHeight) {
-    position.y += v.abs() * dt;
-
-    if (position.y > screenHeight + size.y) {
+  void descendPlatform(double v, double dt) {
+    double cameraBottomY =
+        game.camera.viewfinder.position.y + game.camera.viewport.size.y / 2;
+    bool isBelowCamera = position.y > cameraBottomY;
+    if (isBelowCamera) {
       resetPosition();
     }
   }
 
   void resetPosition() {
     final rng = Random();
-
+    print('x');
     position.x = rng.nextDouble() * game.size.x;
 
     double distance =

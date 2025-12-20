@@ -63,7 +63,7 @@ class Player extends SpriteComponent
     if (!firstJumpIsDone && velocity.y <= 0) {
       firstJumpIsDone = true;
       playerJumpDelta += position.y;
-      game.maxPlatformGap = playerJumpDelta * 0.8;
+      game.maxPlatformGap = playerJumpDelta * 0.1;
     }
   }
 
@@ -86,11 +86,13 @@ class Player extends SpriteComponent
   }
 
   void applyGravity(double dt) {
-    if (position.y < screenSize.y) {
+    final cameraBottomY =
+        game.camera.viewfinder.position.y + game.camera.viewport.size.y / 2;
+    if (position.y < cameraBottomY) {
       velocity.y += gravityC * dt;
     } else {
       jump(normalJumpV);
-      position.y = screenSize.y;
+      position.y = cameraBottomY;
     }
   }
 

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flame/camera.dart';
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +12,14 @@ import 'package:flutter_application_1/player.dart';
 
 class MyFirstFlameGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
-  late Player player;
+  late Player player = Player(
+    position: Vector2(size.x / 2, size.y),
+    screenSize: size,
+  );
   late List<RegularPlatform> platforms;
   late double maxPlatformGap;
   late double minPlatformGap = 50;
-  late double maxPlayerHeight = size.y / 2 - 50;
+  late double highestHeightReached = player.position.y;
   late double highestPlatformY;
   late PlayerScore playerScore;
   MyFirstFlameGame({super.children});
@@ -46,24 +51,31 @@ class MyFirstFlameGame extends FlameGame
         ),
       );
     }
+
     for (final platform in platforms) {
-      add(platform);
+      camera.world?.add(platform);
     }
-    add(player);
+
+    camera.world?.add(player);
+    camera.viewfinder = Viewfinder();
+    camera.viewfinder.position = Vector2(player.position.x, player.position.y);
+    // camera.follow(player);
     camera.viewport.add(Hud());
   }
 
   @override
   Future<void> update(double dt) async {
     super.update(dt);
-
-    if (player.position.y < maxPlayerHeight) {
+    if (player.position.y < highestHeightReached) {
       playerScore.increaseScore(
-        ((player.position.y - maxPlayerHeight)).toInt().abs(),
+        (player.position.y - highestHeightReached).abs().toInt(),
       );
-      player.position.y = maxPlayerHeight;
+      highestHeightReached = player.position.y;
+      camera.moveTo(
+        Vector2(camera.viewfinder.position.x, highestHeightReached),
+      );
       for (final platform in platforms) {
-        platform.descendPlatform(player.velocity.y, dt, size.y);
+        platform.descendPlatform(player.velocity.y, dt);
       }
     }
   }
