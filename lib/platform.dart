@@ -41,10 +41,51 @@ class RegularPlatform extends SpriteComponent
     final rng = Random();
     position.x = rng.nextDouble() * game.size.x;
 
-    double distance =
-        rng.nextDouble() * (game.maxPlatformGap - game.minPlatformGap) +
-        game.minPlatformGap;
+    double distance = calculatePlatformGap(
+      game.playerScore.score,
+      game.minPlatformGap,
+      game.maxPlatformGap,
+    );
     position.y = game.highestPlatformY - distance;
     game.highestPlatformY = position.y;
+  }
+
+  static double calculatePlatformGap(
+    int score,
+    double minPlatformGap,
+    double maxPossiblePlatformGap,
+  ) {
+    double gap = 0;
+    double alteredMinGap = minPlatformGap;
+    double alteredMaxGap = maxPossiblePlatformGap;
+    Random rng = Random();
+
+    switch (score) {
+      case >= 0 && < 1000:
+        alteredMaxGap *= 0.2;
+        break;
+      case >= 1000 && < 3000:
+        alteredMaxGap *= 0.3;
+        break;
+      case >= 3000 && < 6000:
+        alteredMaxGap *= 0.4;
+        gap = 110;
+        break;
+      case >= 6000 && < 10000:
+        alteredMinGap *= 1.3;
+        alteredMaxGap *= 0.7;
+        gap = 90;
+        break;
+      case >= 10000:
+        alteredMinGap *= 1.5;
+        alteredMaxGap *= maxPossiblePlatformGap * 0.9;
+        gap = 70;
+        break;
+      default:
+        gap = 150;
+    }
+    gap = rng.nextDouble() * (alteredMaxGap - alteredMinGap) + alteredMinGap;
+    log(gap);
+    return gap;
   }
 }

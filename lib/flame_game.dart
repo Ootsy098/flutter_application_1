@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flame/camera.dart';
@@ -81,9 +82,11 @@ class MyFirstFlameGame extends FlameGame
     double currentY = camera.viewfinder.position.y + camera.viewport.size.y / 2;
 
     for (int i = 0; i < initialPlatformCount; i++) {
-      double gap =
-          minPlatformGap +
-          Random().nextDouble() * (maxPlatformGap - minPlatformGap);
+      double gap = RegularPlatform.calculatePlatformGap(
+        playerScore.score,
+        minPlatformGap,
+        maxPlatformGap,
+      );
       Vector2 platformPos = Vector2(
         Random().nextDouble() * camera.viewport.size.x,
         currentY + gap,

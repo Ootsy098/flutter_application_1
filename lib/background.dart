@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/flame_game.dart';
 
@@ -15,6 +14,13 @@ class Background extends SpriteComponent
     double windowWidth = game.camera.viewport.size.x;
     double midWindowX = game.camera.viewport.position.x;
     position.x = midWindowX + windowWidth / 2;
-    log(windowWidth.toString());
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    double windowWidth = game.camera.viewport.size.x;
+    double midWindowX = game.camera.viewport.position.x;
+    position.x = midWindowX + windowWidth / 2;
   }
 }
