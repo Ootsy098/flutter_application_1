@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flame/collisions.dart';
@@ -17,6 +18,7 @@ class Player extends SpriteComponent
   late bool firstJumpIsDone = false;
   late bool gameOver = false;
   double playerJumpDelta = 0;
+  double startJumpY = 0;
   Vector2 velocity = Vector2.zero();
   late ShapeHitbox playerHitbox;
 
@@ -61,10 +63,11 @@ class Player extends SpriteComponent
     }
     applyGravity(dt);
     position += velocity * dt;
-    if (!firstJumpIsDone && velocity.y <= 0) {
+    if (!firstJumpIsDone && velocity.y >= 0 && startJumpY != 0) {
       firstJumpIsDone = true;
-      playerJumpDelta += position.y;
-      game.maxPlatformGap = playerJumpDelta * 0.1;
+      playerJumpDelta = startJumpY - position.y;
+      game.maxPlatformGap = playerJumpDelta * 0.9;
+      log(playerJumpDelta.toString());
     }
   }
 
@@ -99,7 +102,7 @@ class Player extends SpriteComponent
 
   void jump(double upwardsVelocity) {
     if (!firstJumpIsDone) {
-      playerJumpDelta = position.y;
+      startJumpY = position.y;
     }
     velocity.y = upwardsVelocity;
   }
