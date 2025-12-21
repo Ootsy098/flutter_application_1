@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
 
 class Player extends SpriteComponent
@@ -12,6 +13,7 @@ class Player extends SpriteComponent
   late double playerSpeed = 550;
   late double horzLerpAcc = 15;
   late double normalJumpV = -1000;
+  late double springJumpV = -2000;
   late double gravityC = 1600;
   late bool firstJumpIsDone = false;
   late bool gameOver = false;
@@ -25,7 +27,7 @@ class Player extends SpriteComponent
   final String playerPNG = 'jumper_sprite.png';
 
   Player({super.position, required this.screenSize})
-    : super(size: Vector2.all(100), anchor: Anchor.bottomCenter);
+    : super(size: Vector2.all(70), anchor: Anchor.bottomCenter);
 
   @override
   Future<void> onLoad() async {
@@ -82,10 +84,10 @@ class Player extends SpriteComponent
   }
 
   void teleport() {
-    if (position.x < -size.x / 2) {
-      position.x = screenSize.x + size.x / 2;
-    } else if (position.x > screenSize.x + size.x / 2) {
-      position.x = -size.x / 2;
+    if (position.x < 0) {
+      position.x = screenSize.x;
+    } else if (position.x > screenSize.x) {
+      position.x = 0;
     }
   }
 
@@ -110,8 +112,30 @@ class Player extends SpriteComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    if (velocity.y > 0 && position.y < other.position.y) {
-      jump(normalJumpV);
+    if (other is! CollidableObject) return;
+    void handlePlatformCollision(CollidableObject other) {
+      double tolerance = other.size.y / 3;
+      if (velocity.y > 0 && position.y < other.position.y + tolerance) {
+        jump(normalJumpV);
+      }
+    }
+
+    void handleSpringCollision(CollidableObject other) {
+      double tolerance = other.size.y / 2;
+      if (velocity.y > 0 && position.y < other.position.y + tolerance) {
+        jump(springJumpV);
+      }
+    }
+
+    switch (other.collisionType) {
+      case 'platform':
+        handlePlatformCollision(other);
+        break;
+      case 'spring':
+        handleSpringCollision(other);
+        break;
+      default:
+        break;
     }
   }
 }

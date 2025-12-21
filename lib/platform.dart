@@ -3,14 +3,21 @@ import 'dart:math';
 import 'package:flame/cache.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
+import 'package:flutter_application_1/spring.dart';
 
 class RegularPlatform extends SpriteComponent
-    with HasGameReference<MyFirstFlameGame> {
+    with HasGameReference<MyFirstFlameGame>
+    implements CollidableObject {
+  @override
+  late String collisionType = 'platform';
+
   late final ShapeHitbox platformHitbox;
+  late final hasSpringChance = 0.05;
 
   RegularPlatform({super.position})
-    : super(size: Vector2(100, 20), anchor: Anchor.center);
+    : super(size: Vector2(80, 20), anchor: Anchor.center);
 
   @override
   Future<void> onLoad() async {
@@ -26,6 +33,10 @@ class RegularPlatform extends SpriteComponent
 
     add(platformHitbox);
     game.highestPlatformY = position.y;
+    position.x = position.x.clamp(0 + size.x / 2, game.size.x - size.x / 2);
+
+    checkIsBelowCam(0, 0);
+    addSpringToPlatform();
   }
 
   void checkIsBelowCam(double v, double dt) {
@@ -39,7 +50,7 @@ class RegularPlatform extends SpriteComponent
 
   void resetPosition() {
     final rng = Random();
-    position.x = rng.nextDouble() * game.size.x;
+    position.x = rng.nextDouble() * (game.size.x - size.x) + size.x / 2;
 
     double distance = calculatePlatformGap(
       game.playerScore.score,
@@ -48,6 +59,21 @@ class RegularPlatform extends SpriteComponent
     );
     position.y = game.highestPlatformY - distance;
     game.highestPlatformY = position.y;
+
+    addSpringToPlatform();
+  }
+
+  void addSpringToPlatform() {
+    Random rng = Random();
+    bool hasSpring = rng.nextDouble() < hasSpringChance;
+    if (!hasSpring) return;
+
+    double springXOffset =
+        (rng.nextDouble() * (size.x - 20)) - (size.x / 2 - 10);
+    Spring spring = Spring(
+      position: Vector2(position.x + springXOffset, position.y - size.y / 2),
+    );
+    game.camera.world?.add(spring);
   }
 
   static double calculatePlatformGap(
@@ -61,31 +87,27 @@ class RegularPlatform extends SpriteComponent
     Random rng = Random();
 
     switch (score) {
-      case >= 0 && < 1000:
+      case >= 0 && < 2000:
         alteredMaxGap *= 0.2;
         break;
-      case >= 1000 && < 3000:
+      case >= 2000 && < 6000:
         alteredMaxGap *= 0.3;
         break;
-      case >= 3000 && < 6000:
-        alteredMaxGap *= 0.4;
-        gap = 110;
-        break;
       case >= 6000 && < 10000:
+        alteredMaxGap *= 0.4;
+        break;
+      case >= 10000 && < 14000:
         alteredMinGap *= 1.3;
         alteredMaxGap *= 0.7;
-        gap = 90;
         break;
-      case >= 10000:
+      case >= 14000:
         alteredMinGap *= 1.5;
         alteredMaxGap *= maxPossiblePlatformGap * 0.9;
-        gap = 70;
         break;
       default:
         gap = 150;
     }
     gap = rng.nextDouble() * (alteredMaxGap - alteredMinGap) + alteredMinGap;
-    log(gap);
     return gap;
   }
 }

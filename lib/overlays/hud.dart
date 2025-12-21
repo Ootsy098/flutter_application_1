@@ -83,6 +83,7 @@ class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
             backgroundColor: Colors.red,
           ),
         ),
+        anchor: Anchor.topLeft,
       ),
       position: Vector2(game.size.x / 2, game.size.y - margin * 3),
       size: Vector2(200, 60),

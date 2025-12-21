@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'dart:math';
-
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -69,18 +67,22 @@ class MyFirstFlameGame extends FlameGame
   }
 
   void loadGameComponents() {
-    player = Player(
-      position: Vector2(size.x / 2, size.y - 100),
-      screenSize: size,
-    );
+    player = Player(position: Vector2(size.x / 2, size.y), screenSize: size);
     maxPlatformGap =
         (pow(player.normalJumpV, 2) / (2 * player.gravityC.abs())) * 0.9;
 
     playerScore = PlayerScore();
 
     platforms = [];
-    double currentY = camera.viewfinder.position.y + camera.viewport.size.y / 2;
-
+    double currentY =
+        camera.viewfinder.position.y + camera.viewport.size.y * 1.5;
+    camera.world?.add(
+      CircleComponent(
+        radius: 5,
+        position: Vector2(size.x / 2, currentY),
+        paint: Paint()..color = Colors.red,
+      ),
+    ); // Debug circle at starting player position
     for (int i = 0; i < initialPlatformCount; i++) {
       double gap = RegularPlatform.calculatePlatformGap(
         playerScore.score,
@@ -89,11 +91,11 @@ class MyFirstFlameGame extends FlameGame
       );
       Vector2 platformPos = Vector2(
         Random().nextDouble() * camera.viewport.size.x,
-        currentY + gap,
+        currentY - gap,
       );
       platforms.add(RegularPlatform(position: platformPos));
       camera.world?.add(platforms.last);
-      currentY += gap;
+      currentY -= gap;
     }
 
     camera.world?.add(player);
