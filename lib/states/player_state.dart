@@ -7,6 +7,7 @@ abstract class PlayerState {
   final PlayerStateManager stateManager;
   final Vector2 velocity;
   final Vector2 position;
+  void onStateEnter() {}
   void stateUpdate(double dt);
 
   PlayerState(this.game, this.velocity, this.position, this.stateManager);

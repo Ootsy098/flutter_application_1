@@ -32,5 +32,6 @@ class PlayerStateManager {
       throw ArgumentError('Unknown state: $state');
     }
     activeState = newState;
+    activeState.onStateEnter();
   }
 }

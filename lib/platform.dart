@@ -81,6 +81,7 @@ class RegularPlatform extends SpriteComponent
     if (randomNumber <= hasPropellorChance || true) {
       objectOnPlatform = Propellor(
         position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
+        spinning: false,
       );
     } else if (randomNumber <= hasSpringChance) {
       objectOnPlatform = Spring(

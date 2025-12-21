@@ -6,6 +6,7 @@ import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
 import 'package:flutter_application_1/states/normal_state.dart';
 import 'package:flutter_application_1/states/player_state_manager.dart';
+import 'package:flutter_application_1/states/propellor_state.dart';
 
 class Player extends SpriteComponent
     with
@@ -18,11 +19,11 @@ class Player extends SpriteComponent
   late double springJumpV = -2000;
 
   late bool gameOver = false;
+  late bool lookingLeft = false;
   double playerJumpDelta = 0;
   Vector2 velocity = Vector2.zero();
   late ShapeHitbox playerHitbox;
   late PlayerStateManager stateManager = PlayerStateManager(game, this);
-
   late Set<LogicalKeyboardKey> keysDown = {};
   final Vector2 screenSize;
   final String playerPNG = 'jumper_sprite.png';
@@ -58,9 +59,11 @@ class Player extends SpriteComponent
     }
     if (keysDown.contains(LogicalKeyboardKey.arrowLeft) &&
         !keysDown.contains(LogicalKeyboardKey.arrowRight)) {
+      lookingLeft = true;
       inputMove(-1, dt);
     } else if (keysDown.contains(LogicalKeyboardKey.arrowRight) &&
         !keysDown.contains(LogicalKeyboardKey.arrowLeft)) {
+      lookingLeft = false;
       inputMove(1, dt);
     } else {
       velocity.x = lerpDouble(velocity.x, 0, horzLerpAcc * dt)!;
@@ -92,21 +95,21 @@ class Player extends SpriteComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
     if (other is! CollidableObject) return;
-    void handlePlatformCollision(CollidableObject other) {
+    void handlePlatformCollision(PositionComponent other) {
       double tolerance = other.size.y / 3;
       if (velocity.y > 0 && position.y < other.position.y + tolerance) {
         (stateManager.activeState as NormalState).jump(normalJumpV);
       }
     }
 
-    void handleSpringCollision(CollidableObject other) {
+    void handleSpringCollision(PositionComponent other) {
       double tolerance = other.size.y / 2;
       if (velocity.y > 0 && position.y < other.position.y + tolerance) {
         (stateManager.activeState as NormalState).jump(springJumpV);
       }
     }
 
-    void handlePropellorCollision(CollidableObject other) {
+    void handlePropellorCollision(PositionComponent other) {
       stateManager.switchState('propellor');
     }
 
@@ -118,6 +121,7 @@ class Player extends SpriteComponent
         handleSpringCollision(other);
         break;
       case 'propellor':
+        if (stateManager.activeState is PropellorState) break;
         handlePropellorCollision(other);
       default:
         break;

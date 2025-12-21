@@ -7,7 +7,9 @@ class Propellor extends SpriteComponent implements CollidableObject {
   @override
   late String collisionType = 'propellor';
   late ShapeHitbox propellorHitbox;
-  Propellor({super.position})
+  late bool spinning;
+
+  Propellor({super.position, required this.spinning})
     : super(size: Vector2(32, 32), anchor: Anchor.bottomCenter);
 
   @override
@@ -20,9 +22,11 @@ class Propellor extends SpriteComponent implements CollidableObject {
     );
     sprite = tileFrame;
 
-    propellorHitbox = RectangleHitbox(size: size)
-      ..collisionType = CollisionType.passive;
+    if (!spinning) {
+      propellorHitbox = RectangleHitbox(size: size)
+        ..collisionType = CollisionType.passive;
 
-    add(propellorHitbox);
+      add(propellorHitbox);
+    }
   }
 }
