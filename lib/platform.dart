@@ -1,10 +1,10 @@
 import 'dart:math';
-
 import 'package:flame/cache.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
+import 'package:flutter_application_1/propellor.dart';
 import 'package:flutter_application_1/spring.dart';
 
 class RegularPlatform extends SpriteComponent
@@ -15,6 +15,9 @@ class RegularPlatform extends SpriteComponent
 
   late final ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;
+  late final hasPropellorChance = 1;
+  late SpriteComponent objectOnPlatform;
+  late bool hasObject = false;
 
   RegularPlatform({super.position})
     : super(size: Vector2(80, 20), anchor: Anchor.center);
@@ -36,7 +39,7 @@ class RegularPlatform extends SpriteComponent
     position.x = position.x.clamp(0 + size.x / 2, game.size.x - size.x / 2);
 
     checkIsBelowCam(0, 0);
-    addSpringToPlatform();
+    addObjectToPlatform();
   }
 
   void checkIsBelowCam(double v, double dt) {
@@ -59,21 +62,33 @@ class RegularPlatform extends SpriteComponent
     );
     position.y = game.highestPlatformY - distance;
     game.highestPlatformY = position.y;
+    if (hasObject) {
+      game.camera.world?.remove(objectOnPlatform);
+      hasObject = false;
+    }
 
-    addSpringToPlatform();
+    addObjectToPlatform();
   }
 
-  void addSpringToPlatform() {
+  void addObjectToPlatform() {
     Random rng = Random();
-    bool hasSpring = rng.nextDouble() < hasSpringChance;
-    if (!hasSpring) return;
-
-    double springXOffset =
+    double randomNumber = rng.nextDouble();
+    if (randomNumber > hasSpringChance) return;
+    hasObject = true;
+    double objectXOffset =
         (rng.nextDouble() * (size.x - 20)) - (size.x / 2 - 10);
-    Spring spring = Spring(
-      position: Vector2(position.x + springXOffset, position.y - size.y / 2),
-    );
-    game.camera.world?.add(spring);
+
+    if (randomNumber <= hasPropellorChance) {
+      objectOnPlatform = Propellor(
+        position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
+      );
+    } else if (randomNumber <= hasSpringChance) {
+      objectOnPlatform = Spring(
+        position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
+      );
+    }
+
+    game.camera.world?.add(objectOnPlatform);
   }
 
   static double calculatePlatformGap(

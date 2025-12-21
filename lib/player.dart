@@ -127,6 +127,11 @@ class Player extends SpriteComponent
       }
     }
 
+    void handlePropellorCollision(CollidableObject other) {
+      // Future implementation for propellor collision
+      print('Collided with propellor');
+    }
+
     switch (other.collisionType) {
       case 'platform':
         handlePlatformCollision(other);
@@ -134,6 +139,8 @@ class Player extends SpriteComponent
       case 'spring':
         handleSpringCollision(other);
         break;
+      case 'propellor':
+        handlePropellorCollision(other);
       default:
         break;
     }
