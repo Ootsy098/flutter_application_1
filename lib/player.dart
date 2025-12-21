@@ -4,6 +4,8 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
+import 'package:flutter_application_1/states/normal_state.dart';
+import 'package:flutter_application_1/states/player_state_manager.dart';
 
 class Player extends SpriteComponent
     with
@@ -14,13 +16,12 @@ class Player extends SpriteComponent
   late double horzLerpAcc = 15;
   late double normalJumpV = -1000;
   late double springJumpV = -2000;
-  late double gravityC = 1600;
-  late bool firstJumpIsDone = false;
+
   late bool gameOver = false;
   double playerJumpDelta = 0;
-  double startJumpY = 0;
   Vector2 velocity = Vector2.zero();
   late ShapeHitbox playerHitbox;
+  late PlayerStateManager stateManager = PlayerStateManager(game, this);
 
   late Set<LogicalKeyboardKey> keysDown = {};
   final Vector2 screenSize;
@@ -64,13 +65,9 @@ class Player extends SpriteComponent
     } else {
       velocity.x = lerpDouble(velocity.x, 0, horzLerpAcc * dt)!;
     }
-    applyGravity(dt);
     position += velocity * dt;
-    if (!firstJumpIsDone && velocity.y >= 0 && startJumpY != 0) {
-      firstJumpIsDone = true;
-      playerJumpDelta = startJumpY - position.y;
-      game.maxPlatformGap = playerJumpDelta * 0.9;
-    }
+
+    stateManager.activeState.stateUpdate(dt);
   }
 
   void inputMove(int dir, double dt) {
@@ -91,24 +88,6 @@ class Player extends SpriteComponent
     }
   }
 
-  void applyGravity(double dt) {
-    final cameraBottomY =
-        game.camera.viewfinder.position.y + game.camera.viewport.size.y / 2;
-    if (position.y < cameraBottomY) {
-      velocity.y += gravityC * dt;
-    } else {
-      game.hud.onGameOver(game.playerScore.score);
-      gameOver = true;
-    }
-  }
-
-  void jump(double upwardsVelocity) {
-    if (!firstJumpIsDone) {
-      startJumpY = position.y;
-    }
-    velocity.y = upwardsVelocity;
-  }
-
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
@@ -116,20 +95,19 @@ class Player extends SpriteComponent
     void handlePlatformCollision(CollidableObject other) {
       double tolerance = other.size.y / 3;
       if (velocity.y > 0 && position.y < other.position.y + tolerance) {
-        jump(normalJumpV);
+        (stateManager.activeState as NormalState).jump(normalJumpV);
       }
     }
 
     void handleSpringCollision(CollidableObject other) {
       double tolerance = other.size.y / 2;
       if (velocity.y > 0 && position.y < other.position.y + tolerance) {
-        jump(springJumpV);
+        (stateManager.activeState as NormalState).jump(springJumpV);
       }
     }
 
     void handlePropellorCollision(CollidableObject other) {
-      // Future implementation for propellor collision
-      print('Collided with propellor');
+      stateManager.switchState('propellor');
     }
 
     switch (other.collisionType) {

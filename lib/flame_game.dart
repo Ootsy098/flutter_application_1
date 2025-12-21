@@ -18,8 +18,8 @@ class MyFirstFlameGame extends FlameGame
   );
   late List<RegularPlatform> platforms;
   late Hud hud;
-  late double maxPlatformGap;
   late double minPlatformGap = 50;
+  late double maxPlatformGap = 200;
   late double highestHeightReached = player.position.y;
   late double highestPlatformY;
   late PlayerScore playerScore;
@@ -68,9 +68,6 @@ class MyFirstFlameGame extends FlameGame
 
   void loadGameComponents() {
     player = Player(position: Vector2(size.x / 2, size.y), screenSize: size);
-    maxPlatformGap =
-        (pow(player.normalJumpV, 2) / (2 * player.gravityC.abs())) * 0.9;
-
     playerScore = PlayerScore();
 
     platforms = [];

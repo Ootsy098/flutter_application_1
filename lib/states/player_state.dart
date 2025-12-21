@@ -1,20 +1,13 @@
-import 'package:flutter_application_1/states/normal_state.dart';
-import 'package:flutter_application_1/states/propellor_state.dart';
+import 'package:flame/components.dart';
+import 'package:flutter_application_1/flame_game.dart';
+import 'package:flutter_application_1/states/player_state_manager.dart';
 
 abstract class PlayerState {
-  final states = <String, PlayerState>{
-    'normalState': NormalState(),
-    'propellorState': PropellorState(),
-  };
-  PlayerState activeState = NormalState();
+  final MyFirstFlameGame game;
+  final PlayerStateManager stateManager;
+  final Vector2 velocity;
+  final Vector2 position;
+  void stateUpdate(double dt);
 
-  void switchState(String state) {
-    final newState = states[state];
-    if (newState == null) {
-      throw ArgumentError('Unknown state: $state');
-    }
-    activeState = newState;
-  }
-
-  void stateUpdate();
+  PlayerState(this.game, this.velocity, this.position, this.stateManager);
 }
