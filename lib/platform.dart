@@ -15,7 +15,7 @@ class RegularPlatform extends SpriteComponent
 
   late final ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;
-  late final hasPropellorChance = 1;
+  late final hasPropellorChance = 0.01;
   late SpriteComponent objectOnPlatform;
   late bool hasObject = false;
 
