@@ -9,6 +9,15 @@ class Propellor extends SpriteComponent implements CollidableObject {
   late ShapeHitbox propellorHitbox;
   late bool spinning;
 
+  final List<Vector2> frames = [
+    Vector2(32, 0),
+    Vector2(0, 32),
+    Vector2(32, 32),
+  ];
+  final double frameDuration = 0.1;
+  late double timer = 0;
+  late int currentFrameIndex = 0;
+
   Propellor({super.position, required this.spinning})
     : super(size: Vector2(32, 32), anchor: Anchor.bottomCenter);
 
@@ -27,6 +36,18 @@ class Propellor extends SpriteComponent implements CollidableObject {
         ..collisionType = CollisionType.passive;
 
       add(propellorHitbox);
+    }
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    timer += dt;
+    if (spinning && timer >= frameDuration) {
+      timer = 0;
+      currentFrameIndex = (currentFrameIndex + 1) % frames.length;
+      Vector2 frame = frames[currentFrameIndex];
+      sprite!.srcPosition = frame;
     }
   }
 }
