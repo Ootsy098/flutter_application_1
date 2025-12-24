@@ -4,6 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
+import 'package:flutter_application_1/power_ups/jetpack.dart';
 import 'package:flutter_application_1/power_ups/propellor.dart';
 import 'package:flutter_application_1/spring.dart';
 
@@ -16,6 +17,7 @@ class RegularPlatform extends SpriteComponent
   late final ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;
   late final hasPropellorChance = 0.01;
+  late final hasJetpackChance = 0.001;
   late SpriteComponent objectOnPlatform;
   late bool hasObject = false;
 
@@ -77,8 +79,13 @@ class RegularPlatform extends SpriteComponent
     hasObject = true;
     double objectXOffset =
         (rng.nextDouble() * (size.x - 20)) - (size.x / 2 - 10);
-
-    if (randomNumber <= hasPropellorChance) {
+    print(randomNumber);
+    if (randomNumber <= hasJetpackChance || true) {
+      objectOnPlatform = Jetpack(
+        position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
+        isEngaged: false,
+      );
+    } else if (randomNumber <= hasPropellorChance) {
       objectOnPlatform = Propellor(
         position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
         spinning: false,

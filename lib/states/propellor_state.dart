@@ -1,5 +1,5 @@
 import 'package:flame/game.dart';
-import 'package:flutter_application_1/propellor.dart';
+import 'package:flutter_application_1/power_ups/propellor.dart';
 import 'package:flutter_application_1/states/player_state.dart';
 
 class PropellorState extends PlayerState {
