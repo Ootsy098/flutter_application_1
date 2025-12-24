@@ -4,7 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
-import 'package:flutter_application_1/propellor.dart';
+import 'package:flutter_application_1/power_ups/propellor.dart';
 import 'package:flutter_application_1/spring.dart';
 
 class RegularPlatform extends SpriteComponent
@@ -78,7 +78,7 @@ class RegularPlatform extends SpriteComponent
     double objectXOffset =
         (rng.nextDouble() * (size.x - 20)) - (size.x / 2 - 10);
 
-    if (randomNumber <= hasPropellorChance || true) {
+    if (randomNumber <= hasPropellorChance) {
       objectOnPlatform = Propellor(
         position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
         spinning: false,

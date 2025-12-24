@@ -27,7 +27,7 @@ class Propellor extends SpriteComponent implements CollidableObject {
     final tileFrame = Sprite(
       spriteSheet,
       srcPosition: Vector2(0, 0),
-      srcSize: Vector2(32, 32),
+      srcSize: size,
     );
     sprite = tileFrame;
 
