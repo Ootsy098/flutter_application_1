@@ -62,8 +62,8 @@ class RegularPlatform extends SpriteComponent
     );
     position.y = game.highestPlatformY - distance;
     game.highestPlatformY = position.y;
-    if (hasObject) {
-      game.camera.world?.remove(objectOnPlatform);
+    if (hasObject && objectOnPlatform.parent != null) {
+      objectOnPlatform.removeFromParent();
       hasObject = false;
     }
 
@@ -78,7 +78,7 @@ class RegularPlatform extends SpriteComponent
     double objectXOffset =
         (rng.nextDouble() * (size.x - 20)) - (size.x / 2 - 10);
 
-    if (randomNumber <= hasPropellorChance) {
+    if (randomNumber <= hasPropellorChance || true) {
       objectOnPlatform = Propellor(
         position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
         spinning: false,

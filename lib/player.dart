@@ -98,7 +98,9 @@ class Player extends SpriteComponent
     void handlePlatformCollision(PositionComponent other) {
       double tolerance = other.size.y / 3;
       if (velocity.y > 0 && position.y < other.position.y + tolerance) {
-        (stateManager.activeState as NormalState).jump(normalJumpV);
+        if (stateManager.activeState is NormalState) {
+          (stateManager.activeState as NormalState).jump(normalJumpV);
+        }
       }
     }
 
@@ -111,6 +113,7 @@ class Player extends SpriteComponent
 
     void handlePropellorCollision(PositionComponent other) {
       stateManager.switchState('propellor');
+      other.removeFromParent();
     }
 
     switch (other.collisionType) {
@@ -123,6 +126,7 @@ class Player extends SpriteComponent
       case 'propellor':
         if (stateManager.activeState is PropellorState) break;
         handlePropellorCollision(other);
+        break;
       default:
         break;
     }
