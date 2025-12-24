@@ -31,11 +31,18 @@ class JetpackState extends PlayerState {
     Vector2 jetpackOffset;
     double playerWidth = game.player.size.x;
     double jpWidth = jetpack.size.x;
-    double offSetX = playerWidth / 2 - jpWidth / 2 + 10;
+    double offSetX = playerWidth / 2 - jpWidth / 2 + 5;
     if (game.player.lookingLeft) {
       jetpackOffset = Vector2(-offSetX, 10);
+      if (jetpack.isFlippedHorizontally) {
+        jetpack.flipHorizontally();
+      }
     } else {
       jetpackOffset = Vector2(offSetX, 10);
+      if (!jetpack.isFlippedHorizontally) {
+        print('object');
+        jetpack.flipHorizontally();
+      }
     }
     jetpack.position = game.player.position - jetpackOffset;
   }

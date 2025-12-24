@@ -16,8 +16,8 @@ class RegularPlatform extends SpriteComponent
 
   late final ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;
-  late final hasPropellorChance = 0.01;
-  late final hasJetpackChance = 0.001;
+  late final hasPropellorChance = 10.01;
+  late final hasJetpackChance = 1; //0.001;
   late SpriteComponent objectOnPlatform;
   late bool hasObject = false;
 
@@ -79,8 +79,8 @@ class RegularPlatform extends SpriteComponent
     hasObject = true;
     double objectXOffset =
         (rng.nextDouble() * (size.x - 20)) - (size.x / 2 - 10);
-    print(randomNumber);
-    if (randomNumber <= hasJetpackChance || true) {
+
+    if (randomNumber <= hasJetpackChance) {
       objectOnPlatform = Jetpack(
         position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
         isEngaged: false,

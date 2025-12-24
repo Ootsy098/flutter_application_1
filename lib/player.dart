@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flame/cache.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
@@ -26,14 +27,25 @@ class Player extends SpriteComponent
   late PlayerStateManager stateManager = PlayerStateManager(game, this);
   late Set<LogicalKeyboardKey> keysDown = {};
   final Vector2 screenSize;
-  final String playerPNG = 'jumper_sprite.png';
+  final String playerPNG = 'jumper_sprites.png';
+  final double jumpAnimationDurationReset = 0.4;
+  late double jumpAnimationDuration;
+  bool animatingJump = false;
 
   Player({super.position, required this.screenSize})
-    : super(size: Vector2.all(70), anchor: Anchor.bottomCenter);
+    : super(size: Vector2.all(62), anchor: Anchor.bottomCenter);
 
   @override
   Future<void> onLoad() async {
-    sprite = await Sprite.load(playerPNG);
+    final spriteSheet = await Images().load(playerPNG);
+    final tileFrame = Sprite(
+      spriteSheet,
+      srcPosition: Vector2(0, 0),
+      srcSize: size,
+    );
+    sprite = tileFrame;
+    jumpAnimationDuration = jumpAnimationDurationReset;
+
     playerHitbox = RectangleHitbox(
       size: Vector2(size.x - 40, size.y),
       position: Vector2(10, 0),
@@ -71,6 +83,12 @@ class Player extends SpriteComponent
     position += velocity * dt;
 
     stateManager.activeState.stateUpdate(dt);
+
+    jumpAnimationDuration -= dt;
+    if (animatingJump && jumpAnimationDuration <= 0) {
+      animatingJump = false;
+      sprite!.srcPosition = Vector2.zero();
+    }
   }
 
   void inputMove(int dir, double dt) {
@@ -100,6 +118,7 @@ class Player extends SpriteComponent
       if (velocity.y > 0 && position.y < other.position.y + tolerance) {
         if (stateManager.activeState is NormalState) {
           (stateManager.activeState as NormalState).jump(normalJumpV);
+          enableJumpAnimation();
         }
       }
     }
@@ -107,7 +126,10 @@ class Player extends SpriteComponent
     void handleSpringCollision(PositionComponent other) {
       double tolerance = other.size.y / 2;
       if (velocity.y > 0 && position.y < other.position.y + tolerance) {
-        (stateManager.activeState as NormalState).jump(springJumpV);
+        if (stateManager.activeState is NormalState) {
+          (stateManager.activeState as NormalState).jump(springJumpV);
+          enableJumpAnimation();
+        }
       }
     }
 
@@ -138,5 +160,11 @@ class Player extends SpriteComponent
       default:
         break;
     }
+  }
+
+  void enableJumpAnimation() {
+    jumpAnimationDuration = jumpAnimationDurationReset;
+    animatingJump = true;
+    sprite!.srcPosition = Vector2(size.x, 4);
   }
 }

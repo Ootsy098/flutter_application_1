@@ -35,9 +35,9 @@ class PropellorState extends PlayerState {
   void movePropellorHat() {
     Vector2 propellorOffset;
     if (game.player.lookingLeft) {
-      propellorOffset = Vector2(-7, game.player.size.y - 10);
+      propellorOffset = Vector2(0, game.player.size.y - 22);
     } else {
-      propellorOffset = Vector2(7, game.player.size.y - 10);
+      propellorOffset = Vector2(0, game.player.size.y - 22);
     }
     propellor.position = game.player.position - propellorOffset;
   }
