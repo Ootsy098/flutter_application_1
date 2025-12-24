@@ -45,11 +45,10 @@ class Player extends SpriteComponent
     jumpAnimationDuration = jumpAnimationDurationReset;
 
     playerHitbox = RectangleHitbox(
-      size: Vector2(size.x - 40, size.y),
+      size: Vector2(size.x - 10, size.y),
       position: Vector2(10, 0),
     )..collisionType = CollisionType.active;
     add(playerHitbox);
-    debugMode = true;
   }
 
   @override
