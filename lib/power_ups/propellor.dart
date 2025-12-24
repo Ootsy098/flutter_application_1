@@ -2,12 +2,16 @@ import 'package:flame/cache.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/collidable_object.dart';
+import 'package:flutter_application_1/player.dart';
+import 'package:flutter_application_1/player_strategies/switch_to_state_strategy.dart';
 
 class Propellor extends SpriteComponent implements CollidableObject {
   @override
   late String collisionType = 'propellor';
   late ShapeHitbox propellorHitbox;
   late bool spinning;
+  final SwitchToStateStrategy switchToPropellorStateStrategy =
+      SwitchToStateStrategy('propellor');
 
   final List<Vector2> frames = [
     Vector2(32, 0),
@@ -49,5 +53,11 @@ class Propellor extends SpriteComponent implements CollidableObject {
       Vector2 frame = frames[currentFrameIndex];
       sprite!.srcPosition = frame;
     }
+  }
+
+  @override
+  void executeStrategy(Player player) {
+    switchToPropellorStateStrategy.execute(player, this);
+    removeFromParent();
   }
 }

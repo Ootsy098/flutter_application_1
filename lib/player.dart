@@ -5,9 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
-import 'package:flutter_application_1/states/normal_state.dart';
 import 'package:flutter_application_1/states/player_state_manager.dart';
-import 'package:flutter_application_1/states/propellor_state.dart';
 
 class Player extends SpriteComponent
     with
@@ -51,6 +49,7 @@ class Player extends SpriteComponent
       position: Vector2(10, 0),
     )..collisionType = CollisionType.active;
     add(playerHitbox);
+    debugMode = true;
   }
 
   @override
@@ -112,53 +111,8 @@ class Player extends SpriteComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    if (other is! CollidableObject) return;
-    void handlePlatformCollision(PositionComponent other) {
-      double tolerance = other.size.y / 3;
-      if (velocity.y > 0 && position.y < other.position.y + tolerance) {
-        if (stateManager.activeState is NormalState) {
-          (stateManager.activeState as NormalState).jump(normalJumpV);
-          enableJumpAnimation();
-        }
-      }
-    }
-
-    void handleSpringCollision(PositionComponent other) {
-      double tolerance = other.size.y / 2;
-      if (velocity.y > 0 && position.y < other.position.y + tolerance) {
-        if (stateManager.activeState is NormalState) {
-          (stateManager.activeState as NormalState).jump(springJumpV);
-          enableJumpAnimation();
-        }
-      }
-    }
-
-    void handlePropellorCollision(PositionComponent other) {
-      stateManager.switchState('propellor');
-      other.removeFromParent();
-    }
-
-    void handleJetPackCollision(PositionComponent other) {
-      stateManager.switchState('jetpack');
-      other.removeFromParent();
-    }
-
-    switch (other.collisionType) {
-      case 'jetpack':
-        handleJetPackCollision(other);
-        break;
-      case 'platform':
-        handlePlatformCollision(other);
-        break;
-      case 'spring':
-        handleSpringCollision(other);
-        break;
-      case 'propellor':
-        if (stateManager.activeState is PropellorState) break;
-        handlePropellorCollision(other);
-        break;
-      default:
-        break;
+    if (other is CollidableObject) {
+      other.executeStrategy(this);
     }
   }
 

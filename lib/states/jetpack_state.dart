@@ -40,7 +40,6 @@ class JetpackState extends PlayerState {
     } else {
       jetpackOffset = Vector2(offSetX, 10);
       if (!jetpack.isFlippedHorizontally) {
-        print('object');
         jetpack.flipHorizontally();
       }
     }

@@ -4,6 +4,8 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
+import 'package:flutter_application_1/player.dart';
+import 'package:flutter_application_1/player_strategies/jump_strategy.dart';
 import 'package:flutter_application_1/power_ups/jetpack.dart';
 import 'package:flutter_application_1/power_ups/propellor.dart';
 import 'package:flutter_application_1/spring.dart';
@@ -16,10 +18,11 @@ class RegularPlatform extends SpriteComponent
 
   late final ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;
-  late final hasPropellorChance = 10.01;
-  late final hasJetpackChance = 1; //0.001;
+  late final hasPropellorChance = 0.01;
+  late final hasJetpackChance = 0.001;
   late SpriteComponent objectOnPlatform;
   late bool hasObject = false;
+  late final JumpStrategy jumpStrategy;
 
   RegularPlatform({super.position})
     : super(size: Vector2(80, 20), anchor: Anchor.center);
@@ -42,6 +45,8 @@ class RegularPlatform extends SpriteComponent
 
     checkIsBelowCam(0, 0);
     addObjectToPlatform();
+
+    jumpStrategy = JumpStrategy(jumpVelocity: game.player.normalJumpV);
   }
 
   void checkIsBelowCam(double v, double dt) {
@@ -132,5 +137,13 @@ class RegularPlatform extends SpriteComponent
     }
     gap = rng.nextDouble() * (alteredMaxGap - alteredMinGap) + alteredMinGap;
     return gap;
+  }
+
+  @override
+  void executeStrategy(Player player) {
+    double tolerance = size.y / 2;
+    if (player.velocity.y > 0 && player.position.y < position.y + tolerance) {
+      jumpStrategy.execute(player, this);
+    }
   }
 }

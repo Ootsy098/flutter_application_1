@@ -51,7 +51,7 @@ class PropellorState extends PlayerState {
   }
 
   void endPropellorState() {
-    game.camera.world?.remove(propellor);
+    propellor.removeFromParent();
     stateManager.switchState('normal');
   }
 }

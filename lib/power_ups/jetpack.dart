@@ -2,12 +2,16 @@ import 'package:flame/cache.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/collidable_object.dart';
+import 'package:flutter_application_1/player.dart';
+import 'package:flutter_application_1/player_strategies/switch_to_state_strategy.dart';
 
 class Jetpack extends SpriteComponent implements CollidableObject {
   @override
   String collisionType = 'jetpack';
   late ShapeHitbox hitbox;
   late bool isEngaged;
+  final SwitchToStateStrategy switchToJetpackStateStrategy =
+      SwitchToStateStrategy('jetpack');
 
   final List<Vector2> engageFrames = [
     Vector2(0, 0),
@@ -101,5 +105,11 @@ class Jetpack extends SpriteComponent implements CollidableObject {
       Vector2 frame = disengageFrames[disengageFrameIndex];
       sprite!.srcPosition = frame;
     }
+  }
+
+  @override
+  void executeStrategy(Player player) {
+    switchToJetpackStateStrategy.execute(player, this);
+    removeFromParent();
   }
 }
