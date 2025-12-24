@@ -18,7 +18,8 @@ class MyFirstFlameGame extends FlameGame
   );
   late List<RegularPlatform> platforms;
   late Hud hud;
-  late double minPlatformGap = 50;
+  final double minPlatformOriginalGap = 50;
+  late double minPlatformGap = minPlatformOriginalGap;
   late double maxPlatformGap = 200;
   late double highestHeightReached = player.position.y;
   late double highestPlatformY;

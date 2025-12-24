@@ -57,7 +57,7 @@ class RegularPlatform extends SpriteComponent
 
     double distance = calculatePlatformGap(
       game.playerScore.score,
-      game.minPlatformGap,
+      game.minPlatformOriginalGap,
       game.maxPlatformGap,
     );
     position.y = game.highestPlatformY - distance;
@@ -78,7 +78,7 @@ class RegularPlatform extends SpriteComponent
     double objectXOffset =
         (rng.nextDouble() * (size.x - 20)) - (size.x / 2 - 10);
 
-    if (randomNumber <= hasPropellorChance || true) {
+    if (randomNumber <= hasPropellorChance) {
       objectOnPlatform = Propellor(
         position: Vector2(position.x + objectXOffset, position.y - size.y / 2),
         spinning: false,
@@ -118,7 +118,7 @@ class RegularPlatform extends SpriteComponent
         break;
       case >= 14000:
         alteredMinGap *= 1.5;
-        alteredMaxGap *= maxPossiblePlatformGap * 0.9;
+        alteredMaxGap *= 0.9;
         break;
       default:
         gap = 150;
