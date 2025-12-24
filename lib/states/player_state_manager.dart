@@ -1,5 +1,6 @@
 import 'package:flutter_application_1/flame_game.dart';
 import 'package:flutter_application_1/player.dart';
+import 'package:flutter_application_1/states/jetpack_state.dart';
 import 'package:flutter_application_1/states/normal_state.dart';
 import 'package:flutter_application_1/states/player_state.dart';
 import 'package:flutter_application_1/states/propellor_state.dart';
@@ -18,6 +19,12 @@ class PlayerStateManager {
       this,
     );
     states['propellor'] = PropellorState(
+      game,
+      player.velocity,
+      player.position,
+      this,
+    );
+    states['jetpack'] = JetpackState(
       game,
       player.velocity,
       player.position,

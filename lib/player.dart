@@ -116,7 +116,15 @@ class Player extends SpriteComponent
       other.removeFromParent();
     }
 
+    void handleJetPackCollision(PositionComponent other) {
+      stateManager.switchState('jetpack');
+      other.removeFromParent();
+    }
+
     switch (other.collisionType) {
+      case 'jetpack':
+        handleJetPackCollision(other);
+        break;
       case 'platform':
         handlePlatformCollision(other);
         break;
