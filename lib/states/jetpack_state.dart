@@ -13,7 +13,7 @@ class JetpackState extends PlayerState {
   @override
   void onStateEnter() {
     resetJetpackDuration();
-    jetpack = Jetpack(isEngaged: true);
+    jetpack = Jetpack(isEngaged: true, totalDuration: jetpackDurationReset);
     game.camera.world?.add(jetpack);
   }
 
