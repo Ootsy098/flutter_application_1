@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/background.dart';
 import 'package:flutter_application_1/overlays/hud.dart';
 import 'package:flutter_application_1/overlays/player_score.dart';
-import 'package:flutter_application_1/platform.dart';
+import 'package:flutter_application_1/platforms/platform.dart';
 import 'package:flutter_application_1/player.dart';
 
 class MyFirstFlameGame extends FlameGame

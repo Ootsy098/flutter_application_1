@@ -9,8 +9,6 @@ import 'package:flutter_application_1/player_strategies/jump_strategy.dart';
 class Spring extends SpriteComponent
     with HasGameReference<MyFirstFlameGame>
     implements CollidableObject {
-  @override
-  late String collisionType = 'spring';
   late ShapeHitbox springHitbox;
   late final JumpStrategy jumpStrategy;
 

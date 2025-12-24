@@ -6,8 +6,6 @@ import 'package:flutter_application_1/player.dart';
 import 'package:flutter_application_1/player_strategies/switch_to_state_strategy.dart';
 
 class Jetpack extends SpriteComponent implements CollidableObject {
-  @override
-  String collisionType = 'jetpack';
   late ShapeHitbox hitbox;
   late bool isEngaged;
   final SwitchToStateStrategy switchToJetpackStateStrategy =

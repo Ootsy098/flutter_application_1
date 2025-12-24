@@ -6,8 +6,6 @@ import 'package:flutter_application_1/player.dart';
 import 'package:flutter_application_1/player_strategies/switch_to_state_strategy.dart';
 
 class Propellor extends SpriteComponent implements CollidableObject {
-  @override
-  late String collisionType = 'propellor';
   late ShapeHitbox propellorHitbox;
   late bool spinning;
   final SwitchToStateStrategy switchToPropellorStateStrategy =

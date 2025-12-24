@@ -13,9 +13,6 @@ import 'package:flutter_application_1/spring.dart';
 class RegularPlatform extends SpriteComponent
     with HasGameReference<MyFirstFlameGame>
     implements CollidableObject {
-  @override
-  late String collisionType = 'platform';
-
   late final ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;
   late final hasPropellorChance = 0.01;
