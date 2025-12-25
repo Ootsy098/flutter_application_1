@@ -13,7 +13,7 @@ abstract class PlatformState {
   PlatformState(this.object, this.game);
 
   void onEnter();
-  void animate();
+  void animate(double dt);
 
   void executeStrategy(Player player) {
     strategy.execute(player, object);

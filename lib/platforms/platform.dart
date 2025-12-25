@@ -53,6 +53,11 @@ class Platform extends SpriteComponent
     addObjectToPlatform();
   }
 
+  @override
+  void update(double dt) {
+    currentState.animate(dt);
+  }
+
   void checkIsBelowCam(double v, double dt) {
     double cameraBottomY =
         game.camera.viewfinder.position.y + game.camera.viewport.size.y / 2;
@@ -72,27 +77,32 @@ class Platform extends SpriteComponent
       game.maxPlatformGap,
     );
     position.y = game.highestPlatformY - distance;
-    game.highestPlatformY = position.y;
+    bool switchedToBreakable = switchState();
+    if (!switchedToBreakable) {
+      game.highestPlatformY = position.y;
+    } else {
+      game.highestPlatformY -= size.y;
+    }
     if (hasObject && objectOnPlatform.parent != null) {
       objectOnPlatform.removeFromParent();
       hasObject = false;
     }
 
-    switchState();
     addObjectToPlatform();
   }
 
-  void switchState() {
+  bool switchState() {
     Random rng = Random();
     double randomNumber = rng.nextDouble();
+    bool switchedToBreakable = false;
     if (randomNumber > breakabalePlatformChance) {
-      if (currentState.runtimeType == RegularPlatformState) return;
       currentState = states['regular']!;
     } else {
-      if (currentState.runtimeType == BreakablePlatformState) return;
       currentState = states['breakable']!;
+      switchedToBreakable = true;
     }
     currentState.onEnter();
+    return switchedToBreakable;
   }
 
   void addObjectToPlatform() {

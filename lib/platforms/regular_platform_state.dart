@@ -21,7 +21,7 @@ class RegularPlatformState extends PlatformState {
   }
 
   @override
-  void animate() {
+  void animate(double dt) {
     return;
   }
 
