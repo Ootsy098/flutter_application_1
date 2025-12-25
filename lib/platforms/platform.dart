@@ -4,13 +4,15 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
+import 'package:flutter_application_1/platforms/breakable_platform.dart';
+import 'package:flutter_application_1/platforms/platform_state.dart';
+import 'package:flutter_application_1/platforms/regular_platform_state.dart';
 import 'package:flutter_application_1/player.dart';
-import 'package:flutter_application_1/player_strategies/jump_strategy.dart';
 import 'package:flutter_application_1/power_ups/jetpack.dart';
 import 'package:flutter_application_1/power_ups/propellor.dart';
 import 'package:flutter_application_1/spring.dart';
 
-class RegularPlatform extends SpriteComponent
+class Platform extends SpriteComponent
     with HasGameReference<MyFirstFlameGame>
     implements CollidableObject {
   late final ShapeHitbox platformHitbox;
@@ -19,9 +21,12 @@ class RegularPlatform extends SpriteComponent
   late final hasJetpackChance = 0.001;
   late SpriteComponent objectOnPlatform;
   late bool hasObject = false;
-  late final JumpStrategy jumpStrategy;
+  late PlatformState currentState;
+  final double breakabalePlatformChance = 0.1;
 
-  RegularPlatform({super.position})
+  final states = <String, PlatformState>{};
+
+  Platform({super.position})
     : super(size: Vector2(80, 20), anchor: Anchor.center);
 
   @override
@@ -35,15 +40,17 @@ class RegularPlatform extends SpriteComponent
     sprite = tileFrame;
     platformHitbox = RectangleHitbox(size: size)
       ..collisionType = CollisionType.passive;
-
     add(platformHitbox);
+
+    states['regular'] = RegularPlatformState(this, game);
+    states['breakable'] = BreakablePlatformState(this, game);
+    currentState = states['regular']!;
+    currentState.onEnter();
+
     game.highestPlatformY = position.y;
     position.x = position.x.clamp(0 + size.x / 2, game.size.x - size.x / 2);
-
     checkIsBelowCam(0, 0);
     addObjectToPlatform();
-
-    jumpStrategy = JumpStrategy(jumpVelocity: game.player.normalJumpV);
   }
 
   void checkIsBelowCam(double v, double dt) {
@@ -71,10 +78,25 @@ class RegularPlatform extends SpriteComponent
       hasObject = false;
     }
 
+    switchState();
     addObjectToPlatform();
   }
 
+  void switchState() {
+    Random rng = Random();
+    double randomNumber = rng.nextDouble();
+    if (randomNumber > breakabalePlatformChance) {
+      if (currentState.runtimeType == RegularPlatformState) return;
+      currentState = states['regular']!;
+    } else {
+      if (currentState.runtimeType == BreakablePlatformState) return;
+      currentState = states['breakable']!;
+    }
+    currentState.onEnter();
+  }
+
   void addObjectToPlatform() {
+    if (currentState.runtimeType != RegularPlatformState) return;
     Random rng = Random();
     double randomNumber = rng.nextDouble();
     if (randomNumber > hasSpringChance) return;
@@ -138,9 +160,6 @@ class RegularPlatform extends SpriteComponent
 
   @override
   void executeStrategy(Player player) {
-    double tolerance = size.y / 2;
-    if (player.velocity.y > 0 && player.position.y < position.y + tolerance) {
-      jumpStrategy.execute(player, this);
-    }
+    currentState.executeStrategy(player);
   }
 }

@@ -26,7 +26,7 @@ class Player extends SpriteComponent
   late Set<LogicalKeyboardKey> keysDown = {};
   final Vector2 screenSize;
   final String playerPNG = 'jumper_sprites.png';
-  final double jumpAnimationDurationReset = 0.4;
+  final double jumpAnimationDurationReset = 0.25;
   late double jumpAnimationDuration;
   bool animatingJump = false;
 

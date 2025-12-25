@@ -38,7 +38,7 @@ class PlayerStateManager {
     if (newState == null) {
       throw ArgumentError('Unknown state: $state');
     }
-    activeState.onStateEnter();
     activeState = newState;
+    activeState.onStateEnter();
   }
 }

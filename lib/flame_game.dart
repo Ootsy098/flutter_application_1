@@ -16,7 +16,7 @@ class MyFirstFlameGame extends FlameGame
     position: Vector2(size.x / 2, size.y),
     screenSize: size,
   );
-  late List<RegularPlatform> platforms;
+  late List<Platform> platforms;
   late Hud hud;
   final double minPlatformOriginalGap = 50;
   late double minPlatformGap = minPlatformOriginalGap;
@@ -74,15 +74,9 @@ class MyFirstFlameGame extends FlameGame
     platforms = [];
     double currentY =
         camera.viewfinder.position.y + camera.viewport.size.y * 1.5;
-    camera.world?.add(
-      CircleComponent(
-        radius: 5,
-        position: Vector2(size.x / 2, currentY),
-        paint: Paint()..color = Colors.red,
-      ),
-    ); // Debug circle at starting player position
+
     for (int i = 0; i < initialPlatformCount; i++) {
-      double gap = RegularPlatform.calculatePlatformGap(
+      double gap = Platform.calculatePlatformGap(
         playerScore.score,
         minPlatformGap,
         maxPlatformGap,
@@ -91,7 +85,7 @@ class MyFirstFlameGame extends FlameGame
         Random().nextDouble() * camera.viewport.size.x,
         currentY - gap,
       );
-      platforms.add(RegularPlatform(position: platformPos));
+      platforms.add(Platform(position: platformPos));
       camera.world?.add(platforms.last);
       currentY -= gap;
     }
