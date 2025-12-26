@@ -30,7 +30,10 @@ class Spring extends SpriteComponent
 
     add(springHitbox);
 
-    jumpStrategy = JumpStrategy(jumpVelocity: game.player.springJumpV);
+    jumpStrategy = JumpStrategy(
+      jumpVelocity: game.player.springJumpV,
+      label: 'spring',
+    );
   }
 
   @override

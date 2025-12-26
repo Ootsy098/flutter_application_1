@@ -8,7 +8,7 @@ class RegularPlatformState extends PlatformState {
   final double animationSpeed = 0.2;
 
   RegularPlatformState(super.object, super.game) {
-    strategy = JumpStrategy(jumpVelocity: 0);
+    strategy = JumpStrategy(jumpVelocity: 0, label: 'normal');
     framesPositions = [Vector2(1, 1)];
     framesSizes = [Vector2(57, 15)];
   }

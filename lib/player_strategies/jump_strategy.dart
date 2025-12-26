@@ -5,11 +5,18 @@ import 'package:flutter_application_1/states/normal_state.dart';
 
 class JumpStrategy extends PlayerStrategy {
   late double jumpVelocity;
-  JumpStrategy({required this.jumpVelocity});
+  late String label;
+  JumpStrategy({required this.jumpVelocity, required this.label});
   @override
   void execute(Player player, PositionComponent other) {
     if (player.stateManager.activeState is NormalState) {
-      (player.stateManager.activeState as NormalState).jump(jumpVelocity);
+      if (label == 'spring') {
+        (player.stateManager.activeState as NormalState).springJump(
+          jumpVelocity,
+        );
+      } else {
+        (player.stateManager.activeState as NormalState).jump(jumpVelocity);
+      }
       player.enableJumpAnimation();
     }
   }

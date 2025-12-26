@@ -8,6 +8,7 @@ import 'package:flutter_application_1/overlays/hud.dart';
 import 'package:flutter_application_1/overlays/player_score.dart';
 import 'package:flutter_application_1/platforms/platform.dart';
 import 'package:flutter_application_1/player.dart';
+import 'package:flutter_application_1/sound_manager.dart';
 
 class MyFirstFlameGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
@@ -24,6 +25,7 @@ class MyFirstFlameGame extends FlameGame
   late double highestPlatformY;
   late PlayerScore playerScore;
   final VoidCallback onRestart;
+  final SoundManager soundManager = SoundManager();
   int initialPlatformCount = 20;
 
   MyFirstFlameGame({required this.onRestart, super.children});

@@ -33,5 +33,11 @@ class NormalState extends PlayerState {
       startJumpY = position.y;
     }
     velocity.y = upwardsVelocity;
+    game.soundManager.playJumpSound();
+  }
+
+  void springJump(double upwardsVelocity) {
+    velocity.y = upwardsVelocity;
+    game.soundManager.playSpringSound();
   }
 }
