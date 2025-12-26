@@ -30,14 +30,12 @@ class Spring extends SpriteComponent
 
     add(springHitbox);
 
-    jumpStrategy = JumpStrategy(
-      jumpVelocity: game.player.springJumpV,
-      label: 'spring',
-    );
+    jumpStrategy = JumpStrategy(jumpVelocity: 0, label: 'spring');
   }
 
   @override
   void executeStrategy(Player player) {
+    jumpStrategy.jumpVelocity = player.springJumpV;
     double tolerance = size.y / 2;
     if (player.velocity.y > 0 && player.position.y < position.y + tolerance) {
       jumpStrategy.execute(player, this);
