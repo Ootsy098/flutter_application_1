@@ -2,10 +2,9 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter_application_1/flame_game.dart';
 
-class PlayAgainButton extends PositionComponent
+class PlayAgainButton extends SpriteComponent
     with TapCallbacks, HasGameReference<MyFirstFlameGame> {
   PlayAgainButton({
-    required this.buttonTextComponent,
     super.position,
     super.size,
     super.scale,
@@ -15,16 +14,14 @@ class PlayAgainButton extends PositionComponent
     super.priority = 6,
   });
 
-  late TextComponent buttonTextComponent;
-
   @override
   Future<void> onLoad() async {
-    add(buttonTextComponent);
+    final image = await game.images.load('play_again_hover.png');
+    sprite = Sprite(image);
   }
 
   @override
   void onTapDown(TapDownEvent event) {
-    // Handle button tap logic here
     super.onTapDown(event);
     game.overlays.remove('Hud');
     game.onRestart();

@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flame/camera.dart';
-import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +69,7 @@ class MyFirstFlameGame extends FlameGame
   void loadGameComponents() {
     player = Player(position: Vector2(size.x / 2, size.y), screenSize: size);
     playerScore = PlayerScore();
+    add(playerScore);
 
     platforms = [];
     double currentY =

@@ -23,7 +23,7 @@ class NormalState extends PlayerState {
     if (position.y < cameraBottomY) {
       velocity.y += gravityC * dt;
     } else {
-      game.hud.onGameOver(game.playerScore.score);
+      game.hud.onGameOver(game.playerScore.score, game.playerScore.highScore);
       game.player.gameOver = true;
     }
   }

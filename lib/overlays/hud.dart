@@ -29,8 +29,9 @@ class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
       text: '${game.playerScore.score}',
       textRenderer: TextPaint(
         style: const TextStyle(
-          fontSize: 32,
-          color: Color.fromRGBO(10, 10, 10, 1),
+          fontSize: 48,
+          color: Color.fromRGBO(0, 0, 0, 1),
+          fontFamily: 'DoodleJump',
         ),
       ),
       anchor: Anchor.center,
@@ -39,13 +40,14 @@ class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
     add(_scoreTextComponent);
   }
 
-  void onGameOver(int finalScore) {
+  void onGameOver(int finalScore, int highScore) {
     _gameoverTextComponent = TextComponent(
       text: 'Game Over',
       textRenderer: TextPaint(
         style: const TextStyle(
           fontSize: 48,
-          color: Color.fromRGBO(255, 0, 0, 1),
+          color: Color.fromRGBO(0, 0, 0, 1),
+          fontFamily: 'DoodleJump',
         ),
       ),
       anchor: Anchor.center,
@@ -57,16 +59,14 @@ class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
       game.size.x / 2,
       gameOverTextHeight + margin,
     );
-    _scoreTextComponent.textRenderer = TextPaint(
-      style: const TextStyle(fontSize: 48, color: Color.fromRGBO(255, 0, 0, 1)),
-    );
 
     _highScoreTextComponent = TextComponent(
-      text: 'HighScore: $finalScore',
+      text: 'HighScore: $highScore',
       textRenderer: TextPaint(
         style: const TextStyle(
           fontSize: 48,
-          color: Color.fromRGBO(255, 0, 0, 1),
+          color: Color.fromRGBO(0, 0, 0, 1),
+          fontFamily: 'DoodleJump',
         ),
       ),
       anchor: Anchor.center,
@@ -74,17 +74,6 @@ class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
     );
 
     _playAgainButtonComponent = PlayAgainButton(
-      buttonTextComponent: TextComponent(
-        text: 'Play Again',
-        textRenderer: TextPaint(
-          style: const TextStyle(
-            fontSize: 32,
-            color: Color.fromRGBO(0, 0, 255, 1),
-            backgroundColor: Colors.red,
-          ),
-        ),
-        anchor: Anchor.topLeft,
-      ),
       position: Vector2(game.size.x / 2, game.size.y - margin * 3),
       size: Vector2(200, 60),
       anchor: Anchor.center,
