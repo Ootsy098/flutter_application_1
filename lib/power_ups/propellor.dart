@@ -21,7 +21,11 @@ class Propellor extends SpriteComponent implements CollidableObject {
   late int currentFrameIndex = 0;
 
   Propellor({super.position, required this.spinning})
-    : super(size: Vector2(32, 32), anchor: Anchor.bottomCenter);
+    : super(size: Vector2(32, 32), anchor: Anchor.bottomCenter) {
+    if (spinning) {
+      priority = 11;
+    }
+  }
 
   @override
   Future<void> onLoad() async {

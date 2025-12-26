@@ -36,7 +36,11 @@ class Jetpack extends SpriteComponent implements CollidableObject {
   late bool engageAnimationCompleted = false;
 
   Jetpack({super.position, required this.isEngaged, this.totalDuration = 0})
-    : super(size: Vector2(32, 62), anchor: Anchor.center);
+    : super(size: Vector2(32, 62), anchor: Anchor.center) {
+    if (isEngaged) {
+      priority = 11;
+    }
+  }
 
   @override
   Future<void> onLoad() async {

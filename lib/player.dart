@@ -31,7 +31,9 @@ class Player extends SpriteComponent
   bool animatingJump = false;
 
   Player({super.position, required this.screenSize})
-    : super(size: Vector2.all(62), anchor: Anchor.bottomCenter);
+    : super(size: Vector2.all(62), anchor: Anchor.bottomCenter) {
+    priority = 10;
+  }
 
   @override
   Future<void> onLoad() async {
