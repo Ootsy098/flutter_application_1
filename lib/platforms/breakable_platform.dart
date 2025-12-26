@@ -50,10 +50,12 @@ class BreakablePlatformState extends PlatformState {
 
   @override
   void executeStrategy(Player player) {
+    if (isBroken) return;
     double tolerance = object.size.y / 2;
     if (player.velocity.y > 0 &&
         player.position.y < object.position.y + tolerance) {
       isBroken = true;
+      game.soundManager.playBreakSound();
     }
     return;
   }

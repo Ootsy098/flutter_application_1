@@ -69,7 +69,9 @@ class MyFirstFlameGame extends FlameGame
   }
 
   void loadGameComponents() {
-    player = Player(position: Vector2(size.x / 2, size.y), screenSize: size);
+    double playerX = size.x / 2;
+    double playerY = size.y;
+    player = Player(position: Vector2(playerX, playerY), screenSize: size);
     playerScore = PlayerScore();
     add(playerScore);
 

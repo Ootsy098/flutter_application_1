@@ -15,6 +15,7 @@ class JetpackState extends PlayerState {
     resetJetpackDuration();
     jetpack = Jetpack(isEngaged: true, totalDuration: jetpackDurationReset);
     game.camera.world?.add(jetpack);
+    game.soundManager.playJetpackSound();
   }
 
   @override

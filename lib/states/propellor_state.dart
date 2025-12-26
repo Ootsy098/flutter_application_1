@@ -20,6 +20,7 @@ class PropellorState extends PlayerState {
     resetPropellorDuration();
     propellor = Propellor(spinning: true);
     game.camera.world?.add(propellor);
+    game.soundManager.playPropellerSound();
   }
 
   @override

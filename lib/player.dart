@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
+import 'package:flutter_application_1/states/normal_state.dart';
 import 'package:flutter_application_1/states/player_state_manager.dart';
 
 class Player extends SpriteComponent
@@ -12,10 +13,10 @@ class Player extends SpriteComponent
         KeyboardHandler,
         CollisionCallbacks,
         HasGameReference<MyFirstFlameGame> {
-  late double playerSpeed = 550;
+  late double playerSpeed = 350;
   late double horzLerpAcc = 15;
-  late double normalJumpV = -1000;
-  late double springJumpV = -2000;
+  late double normalJumpV = -900;
+  late double springJumpV = -1500;
 
   late bool gameOver = false;
   late bool lookingLeft = false;
@@ -45,6 +46,7 @@ class Player extends SpriteComponent
     );
     sprite = tileFrame;
     jumpAnimationDuration = jumpAnimationDurationReset;
+    velocity.y = normalJumpV * 0.6;
 
     playerHitbox = RectangleHitbox(
       size: Vector2(size.x - 10, size.y),
@@ -68,6 +70,9 @@ class Player extends SpriteComponent
     super.update(dt);
     if (keysDown.contains(LogicalKeyboardKey.keyR)) {
       game.onRestart();
+    }
+    if (gameOver) {
+      return;
     }
     if (keysDown.contains(LogicalKeyboardKey.arrowLeft) &&
         !keysDown.contains(LogicalKeyboardKey.arrowRight)) {
@@ -112,6 +117,9 @@ class Player extends SpriteComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
+    if (stateManager.activeState is! NormalState) {
+      return;
+    }
     if (other is CollidableObject) {
       other.executeStrategy(this);
     }

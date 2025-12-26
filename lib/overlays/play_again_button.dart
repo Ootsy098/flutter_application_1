@@ -24,6 +24,7 @@ class PlayAgainButton extends SpriteComponent
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
     game.overlays.remove('Hud');
+    game.soundManager.playButtonSound();
     game.onRestart();
   }
 }

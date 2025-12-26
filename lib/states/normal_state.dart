@@ -20,11 +20,12 @@ class NormalState extends PlayerState {
   void applyGravity(double dt) {
     final cameraBottomY =
         game.camera.viewfinder.position.y + game.camera.viewport.size.y / 2;
-    if (position.y < cameraBottomY) {
+    if (position.y < cameraBottomY + game.player.size.y) {
       velocity.y += gravityC * dt;
     } else {
       game.hud.onGameOver(game.playerScore.score, game.playerScore.highScore);
       game.player.gameOver = true;
+      game.soundManager.playFallSound();
     }
   }
 
