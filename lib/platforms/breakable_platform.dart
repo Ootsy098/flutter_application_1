@@ -3,7 +3,7 @@ import 'package:flutter_application_1/platforms/platform_state.dart';
 import 'package:flutter_application_1/player.dart';
 
 class BreakablePlatformState extends PlatformState {
-  final double platformGravityC = 700;
+  final double platformGravityC = 400;
   late bool isBroken = false;
   late double animationTimer = 0;
   late double animationSpeed = 0.05;
@@ -26,6 +26,7 @@ class BreakablePlatformState extends PlatformState {
 
   @override
   void onEnter() {
+    object.size = framesSizes[0];
     object.sprite!.srcPosition = framesPositions[0];
     object.sprite!.srcSize = framesSizes[0];
     isBroken = false;
@@ -42,6 +43,7 @@ class BreakablePlatformState extends PlatformState {
         animationTimer > animationSpeed) {
       object.sprite!.srcPosition = framesPositions[currentFrameIndex];
       object.sprite!.srcSize = framesSizes[currentFrameIndex];
+      object.size = framesSizes[currentFrameIndex];
       animationTimer = 0;
       currentFrameIndex++;
     }

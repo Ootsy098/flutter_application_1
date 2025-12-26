@@ -18,6 +18,7 @@ class RegularPlatformState extends PlatformState {
     (strategy as JumpStrategy).jumpVelocity = game.player.normalJumpV;
     object.sprite!.srcPosition = framesPositions[0];
     object.sprite!.srcSize = framesSizes[0];
+    object.size = framesSizes[0];
   }
 
   @override

@@ -26,7 +26,7 @@ class MyFirstFlameGame extends FlameGame
   late PlayerScore playerScore;
   final VoidCallback onRestart;
   final SoundManager soundManager = SoundManager();
-  int initialPlatformCount = 20;
+  int initialPlatformCount = 35;
 
   MyFirstFlameGame({required this.onRestart, super.children});
 

@@ -22,7 +22,7 @@ class Platform extends SpriteComponent
   late SpriteComponent objectOnPlatform;
   late bool hasObject = false;
   late PlatformState currentState;
-  final double breakabalePlatformChance = 0.1;
+  final double breakablePlatformProbability = 0.3;
 
   final states = <String, PlatformState>{};
 
@@ -81,7 +81,7 @@ class Platform extends SpriteComponent
     if (!switchedToBreakable) {
       game.highestPlatformY = position.y;
     } else {
-      game.highestPlatformY -= size.y;
+      game.highestPlatformY -= size.y * 3;
     }
     if (hasObject && objectOnPlatform.parent != null) {
       objectOnPlatform.removeFromParent();
@@ -95,7 +95,7 @@ class Platform extends SpriteComponent
     Random rng = Random();
     double randomNumber = rng.nextDouble();
     bool switchedToBreakable = false;
-    if (randomNumber > breakabalePlatformChance) {
+    if (randomNumber > breakablePlatformProbability) {
       currentState = states['regular']!;
     } else {
       currentState = states['breakable']!;

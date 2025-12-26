@@ -15,8 +15,8 @@ class Player extends SpriteComponent
         HasGameReference<MyFirstFlameGame> {
   late double playerSpeed = 350;
   late double horzLerpAcc = 15;
-  late double normalJumpV = -900;
-  late double springJumpV = -1500;
+  late double normalJumpV = -800;
+  late double springJumpV = -1300;
 
   late bool gameOver = false;
   late bool lookingLeft = false;
@@ -52,6 +52,7 @@ class Player extends SpriteComponent
       size: Vector2(size.x - 10, size.y),
       position: Vector2(10, 0),
     )..collisionType = CollisionType.active;
+    debugMode = true;
     add(playerHitbox);
   }
 
