@@ -5,7 +5,7 @@ class SoundManager {
   void playBackgroundMusic() {
     if (isMusicPlaying) return;
     isMusicPlaying = true;
-    FlameAudio.bgm.play('music.mp3', volume: 0.5);
+    // FlameAudio.bgm.play('music.mp3', volume: 0.5);
   }
 
   void stopBackgroundMusic() {

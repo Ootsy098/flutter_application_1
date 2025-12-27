@@ -1,3 +1,8 @@
+import 'dart:ui';
+
+import 'package:flame/components.dart';
+import 'package:flame/particles.dart';
+import 'package:flutter_application_1/create_particles.dart';
 import 'package:flutter_application_1/states/player_state.dart';
 
 class NormalState extends PlayerState {
@@ -35,6 +40,12 @@ class NormalState extends PlayerState {
     }
     velocity.y = upwardsVelocity;
     game.soundManager.playJumpSound();
+    CreateParticles.createJumpParticleEffect(
+      position,
+      const Color.fromARGB(255, 200, 200, 200),
+      10,
+      game,
+    );
   }
 
   void springJump(double upwardsVelocity) {
