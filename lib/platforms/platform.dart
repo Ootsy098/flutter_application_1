@@ -18,7 +18,7 @@ class Platform extends SpriteComponent
   late ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;
   late final hasPropellorChance = 0.01;
-  late final hasJetpackChance = 0.001;
+  late final hasJetpackChance = 0.003;
   late SpriteComponent objectOnPlatform;
   late bool hasObject = false;
   late PlatformState currentState;
