@@ -7,5 +7,5 @@ void main() {
 }
 
 void onRestart() {
-  runApp(GameWidget(game: MyFirstFlameGame(onRestart: onRestart)));
+  runApp(GameWidget(game: DoodleJump(onRestart: onRestart)));
 }

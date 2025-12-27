@@ -10,7 +10,7 @@ import 'package:flutter_application_1/platforms/platform.dart';
 import 'package:flutter_application_1/player.dart';
 import 'package:flutter_application_1/sound_manager.dart';
 
-class MyFirstFlameGame extends FlameGame
+class DoodleJump extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
   late Player player = Player(
     position: Vector2(size.x / 2, size.y),
@@ -28,7 +28,7 @@ class MyFirstFlameGame extends FlameGame
   final SoundManager soundManager = SoundManager();
   int initialPlatformCount = 35;
 
-  MyFirstFlameGame({required this.onRestart, super.children});
+  DoodleJump({required this.onRestart, super.children});
 
   @override
   Color backgroundColor() {

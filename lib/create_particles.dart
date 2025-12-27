@@ -10,7 +10,7 @@ class CreateParticles {
     Vector2 position,
     Color color,
     int count,
-    MyFirstFlameGame game,
+    DoodleJump game,
   ) {
     final particleSystem = ParticleSystemComponent(
       particle: Particle.generate(

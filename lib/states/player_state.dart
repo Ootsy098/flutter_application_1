@@ -3,7 +3,7 @@ import 'package:flutter_application_1/flame_game.dart';
 import 'package:flutter_application_1/states/player_state_manager.dart';
 
 abstract class PlayerState {
-  final MyFirstFlameGame game;
+  final DoodleJump game;
   final PlayerStateManager stateManager;
   final Vector2 velocity;
   final Vector2 position;

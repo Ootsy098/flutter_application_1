@@ -10,10 +10,7 @@ import 'package:flutter_application_1/states/normal_state.dart';
 import 'package:flutter_application_1/states/player_state_manager.dart';
 
 class Player extends SpriteComponent
-    with
-        KeyboardHandler,
-        CollisionCallbacks,
-        HasGameReference<MyFirstFlameGame> {
+    with KeyboardHandler, CollisionCallbacks, HasGameReference<DoodleJump> {
   late double playerSpeed = 350;
   late double horzLerpAcc = 15;
   late double normalJumpV = -800;

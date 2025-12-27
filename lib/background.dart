@@ -1,8 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter_application_1/flame_game.dart';
 
-class Background extends SpriteComponent
-    with HasGameReference<MyFirstFlameGame> {
+class Background extends SpriteComponent with HasGameReference<DoodleJump> {
   Background({super.position})
     : super(size: Vector2.zero(), anchor: Anchor.topCenter);
 

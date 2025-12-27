@@ -5,7 +5,7 @@ import 'package:flutter_application_1/player_strategies/player_strategy.dart';
 
 abstract class PlatformState {
   late final SpriteComponent object;
-  late final MyFirstFlameGame game;
+  late final DoodleJump game;
   late final List<Vector2> framesPositions;
   late final List<Vector2> framesSizes;
   late final PlayerStrategy strategy;

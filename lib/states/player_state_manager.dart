@@ -6,7 +6,7 @@ import 'package:flutter_application_1/states/player_state.dart';
 import 'package:flutter_application_1/states/propellor_state.dart';
 
 class PlayerStateManager {
-  final MyFirstFlameGame game;
+  final DoodleJump game;
   final Player player;
   final states = <String, PlayerState>{};
   late PlayerState activeState;

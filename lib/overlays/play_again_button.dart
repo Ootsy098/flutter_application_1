@@ -3,7 +3,7 @@ import 'package:flame/events.dart';
 import 'package:flutter_application_1/flame_game.dart';
 
 class PlayAgainButton extends SpriteComponent
-    with TapCallbacks, HasGameReference<MyFirstFlameGame> {
+    with TapCallbacks, HasGameReference<DoodleJump> {
   PlayAgainButton({
     super.position,
     super.size,

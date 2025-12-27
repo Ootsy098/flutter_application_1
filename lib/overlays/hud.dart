@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/flame_game.dart';
 import 'package:flutter_application_1/overlays/play_again_button.dart';
 
-class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
+class Hud extends PositionComponent with HasGameReference<DoodleJump> {
   Hud({
     super.position,
     super.size,

@@ -13,7 +13,7 @@ import 'package:flutter_application_1/power_ups/propellor.dart';
 import 'package:flutter_application_1/spring.dart';
 
 class Platform extends SpriteComponent
-    with HasGameReference<MyFirstFlameGame>
+    with HasGameReference<DoodleJump>
     implements CollidableObject {
   late ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;

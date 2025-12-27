@@ -7,7 +7,7 @@ import 'package:flutter_application_1/player.dart';
 import 'package:flutter_application_1/player_strategies/jump_strategy.dart';
 
 class Spring extends SpriteComponent
-    with HasGameReference<MyFirstFlameGame>
+    with HasGameReference<DoodleJump>
     implements CollidableObject {
   late ShapeHitbox springHitbox;
   late final JumpStrategy jumpStrategy;
