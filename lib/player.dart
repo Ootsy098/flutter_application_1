@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flame/cache.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/collidable_object.dart';
 import 'package:flutter_application_1/flame_game.dart';
@@ -54,6 +55,16 @@ class Player extends SpriteComponent
       position: Vector2(15, 15),
     )..collisionType = CollisionType.active;
     add(playerHitbox);
+
+    final decorator = Shadow3DDecorator(
+      base: Vector2(100, 100),
+      angle: -1,
+      xShift: -0,
+      yScale: 1.5,
+      opacity: 0.5,
+      blur: 1.5,
+    );
+    this.decorator.addLast(decorator);
   }
 
   @override

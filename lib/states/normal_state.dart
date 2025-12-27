@@ -1,7 +1,4 @@
 import 'dart:ui';
-
-import 'package:flame/components.dart';
-import 'package:flame/particles.dart';
 import 'package:flutter_application_1/create_particles.dart';
 import 'package:flutter_application_1/states/player_state.dart';
 
