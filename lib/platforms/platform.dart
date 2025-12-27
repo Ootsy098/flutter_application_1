@@ -15,7 +15,7 @@ import 'package:flutter_application_1/spring.dart';
 class Platform extends SpriteComponent
     with HasGameReference<MyFirstFlameGame>
     implements CollidableObject {
-  late final ShapeHitbox platformHitbox;
+  late ShapeHitbox platformHitbox;
   late final hasSpringChance = 0.05;
   late final hasPropellorChance = 0.01;
   late final hasJetpackChance = 0.001;
@@ -38,7 +38,7 @@ class Platform extends SpriteComponent
       srcSize: Vector2(57, 15),
     );
     sprite = tileFrame;
-    platformHitbox = RectangleHitbox(size: size)
+    platformHitbox = RectangleHitbox(size: tileFrame.srcSize)
       ..collisionType = CollisionType.passive;
     add(platformHitbox);
 
@@ -81,7 +81,7 @@ class Platform extends SpriteComponent
     if (!switchedToBreakable) {
       game.highestPlatformY = position.y;
     } else {
-      game.highestPlatformY -= size.y * 3;
+      game.highestPlatformY -= size.y * 1.5;
     }
     if (hasObject && objectOnPlatform.parent != null) {
       objectOnPlatform.removeFromParent();

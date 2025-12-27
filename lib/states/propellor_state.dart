@@ -4,7 +4,7 @@ import 'package:flutter_application_1/states/player_state.dart';
 
 class PropellorState extends PlayerState {
   late Propellor propellor;
-  final double propellorForce = 6000;
+  final double propellorForce = 4000;
   final double propellorDurationReset = 2.7;
   late double propellorDuration;
 

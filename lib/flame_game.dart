@@ -40,8 +40,8 @@ class MyFirstFlameGame extends FlameGame
     camera.viewport = FixedResolutionViewport(resolution: Vector2(500, size.y));
 
     loadGameComponents();
-
     add(Background());
+    soundManager.stopBackgroundMusic();
 
     camera.viewfinder = Viewfinder();
     camera.viewfinder.position = Vector2(player.position.x, player.position.y);

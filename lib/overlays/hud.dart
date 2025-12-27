@@ -15,7 +15,7 @@ class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
   });
 
   late TextComponent _scoreTextComponent;
-
+  late TextComponent _pressSpaceComponent;
   late TextComponent _gameoverTextComponent;
   late TextComponent _highScoreTextComponent;
   late PlayAgainButton _playAgainButtonComponent;
@@ -38,9 +38,25 @@ class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
       position: Vector2(game.size.x / 2, 20),
     );
     add(_scoreTextComponent);
+
+    _pressSpaceComponent = TextComponent(
+      text: 'Press Space to Start',
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 50,
+          color: Color.fromRGBO(0, 0, 0, 1),
+          fontFamily: 'DoodleJump',
+        ),
+      ),
+      anchor: Anchor.center,
+      position: Vector2(game.size.x / 2, game.size.y / 4),
+    );
+    add(_pressSpaceComponent);
   }
 
   void onGameOver(int finalScore, int highScore) {
+    game.soundManager.stopBackgroundMusic();
+
     _gameoverTextComponent = TextComponent(
       text: 'Game Over',
       textRenderer: TextPaint(
@@ -87,6 +103,9 @@ class Hud extends PositionComponent with HasGameReference<MyFirstFlameGame> {
   @override
   void update(double dt) {
     super.update(dt);
+    if (game.player.started) {
+      _pressSpaceComponent.removeFromParent();
+    }
     if (game.player.gameOver) return;
     _scoreTextComponent.text = game.playerScore.score.toString();
   }

@@ -30,6 +30,7 @@ class Player extends SpriteComponent
   final double jumpAnimationDurationReset = 0.25;
   late double jumpAnimationDuration;
   bool animatingJump = false;
+  bool started = false;
 
   Player({super.position, required this.screenSize})
     : super(size: Vector2.all(62), anchor: Anchor.bottomCenter) {
@@ -49,10 +50,9 @@ class Player extends SpriteComponent
     velocity.y = normalJumpV * 0.6;
 
     playerHitbox = RectangleHitbox(
-      size: Vector2(size.x - 10, size.y),
-      position: Vector2(10, 0),
+      size: Vector2(size.x - 30, size.y - 15),
+      position: Vector2(15, 15),
     )..collisionType = CollisionType.active;
-    debugMode = true;
     add(playerHitbox);
   }
 
@@ -72,7 +72,13 @@ class Player extends SpriteComponent
     if (keysDown.contains(LogicalKeyboardKey.keyR)) {
       game.onRestart();
     }
-    if (gameOver) {
+    if (keysDown.contains(LogicalKeyboardKey.space)) {
+      if (!started) {
+        game.soundManager.playBackgroundMusic();
+      }
+      started = true;
+    }
+    if (gameOver || !started) {
       return;
     }
     if (keysDown.contains(LogicalKeyboardKey.arrowLeft) &&

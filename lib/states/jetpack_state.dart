@@ -4,7 +4,7 @@ import 'package:flutter_application_1/states/player_state.dart';
 
 class JetpackState extends PlayerState {
   late Jetpack jetpack;
-  final double jetpackForce = 10000;
+  final double jetpackForce = 7000;
   final double jetpackDurationReset = 3;
   late double jetpackDuration;
 
